@@ -9,7 +9,8 @@ import {
   UserCheck, 
   PlusCircle,
   Activity,
-  Wifi
+  Wifi,
+  HeartPulse
 } from 'lucide-react';
 import { playAlertSound } from '../utils/audio';
 
@@ -18,6 +19,8 @@ export default function Navbar({
   setSoundEnabled, 
   onOpenStatusModal, 
   onOpenNewIncidentModal,
+  onToggleAiTriage,
+  isAiTriageOpen = false,
   threatLevel = 'DEFCON 2',
   activeIncidentsCount = 5,
   activeRespondersCount = 7,
@@ -112,6 +115,22 @@ export default function Navbar({
               }`}
             >
               {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+            </button>
+
+            {/* AI First-Aid Triage Terminal Toggle */}
+            <button
+              onClick={onToggleAiTriage}
+              title="Toggle AEGIS-MEDIC First-Aid AI Triage Assistant"
+              className={`flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-lg border text-xs sm:text-sm font-semibold transition-all shadow-sm ${
+                isAiTriageOpen 
+                  ? 'bg-gradient-to-r from-rose-600 to-rose-700 text-white border-rose-400 shadow-rose-950/50 ring-2 ring-rose-500/40' 
+                  : 'bg-rose-500/10 text-rose-400 border-rose-500/40 hover:bg-rose-500/20 hover:border-rose-500/70'
+              }`}
+            >
+              <HeartPulse className={`w-4 h-4 text-rose-400 ${isAiTriageOpen ? 'animate-bounce text-white' : 'animate-pulse'}`} />
+              <span className="hidden sm:inline">AI Triage</span>
+              <span className="sm:hidden">AI</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
             </button>
 
             {/* Quick User Status Check */}

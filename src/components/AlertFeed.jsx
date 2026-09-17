@@ -12,7 +12,8 @@ import {
   ChevronRight,
   Filter,
   CheckCircle,
-  Clock
+  Clock,
+  HeartPulse
 } from 'lucide-react';
 import { playAlertSound } from '../utils/audio';
 
@@ -20,6 +21,7 @@ export default function AlertFeed({
   alerts = [],
   onSelectAlert,
   onAddAlert,
+  onAskAiTriage,
   soundEnabled = true
 }) {
   const [filter, setFilter] = useState('all');
@@ -263,9 +265,25 @@ export default function AlertFeed({
                   <span className="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-400">
                     📍 {alert.zone}
                   </span>
-                  <div className="flex items-center gap-1 text-slate-500 group-hover:text-slate-300 transition-colors">
-                    <span>Track</span>
-                    <ChevronRight className="w-3 h-3" />
+                  <div className="flex items-center gap-2">
+                    {onAskAiTriage && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onAskAiTriage(alert);
+                        }}
+                        title="Consult AEGIS-MEDIC for emergency triage instructions"
+                        className="px-2 py-0.5 rounded bg-rose-500/10 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 flex items-center gap-1 transition-all"
+                      >
+                        <HeartPulse className="w-2.5 h-2.5 text-rose-400 animate-pulse" />
+                        <span>AI Protocol</span>
+                      </button>
+                    )}
+                    <div className="flex items-center gap-1 text-slate-500 group-hover:text-slate-300 transition-colors">
+                      <span>Track</span>
+                      <ChevronRight className="w-3 h-3" />
+                    </div>
                   </div>
                 </div>
               </div>

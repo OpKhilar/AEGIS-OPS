@@ -71,3 +71,52 @@ export function playAlertSound(type = 'critical') {
     console.warn('Audio playback not supported or blocked by browser policy:', err);
   }
 }
+
+let metronomeInterval = null;
+
+/**
+ * Start rhythmic CPR compression metronome (default 110 BPM)
+ */
+export function startCprMetronome(bpm = 110, onTick = null) {
+  stopCprMetronome();
+  const intervalMs = (60 / bpm) * 1000;
+
+  const playTick = () => {
+    try {
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(800, now);
+      gain.gain.setValueAtTime(0.3, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+
+      osc.start(now);
+      osc.stop(now + 0.08);
+      if (onTick) onTick();
+    } catch {
+      // ignore
+    }
+  };
+
+  playTick();
+  metronomeInterval = setInterval(playTick, intervalMs);
+  return metronomeInterval;
+}
+
+/**
+ * Stop CPR compression metronome
+ */
+export function stopCprMetronome() {
+  if (metronomeInterval) {
+    clearInterval(metronomeInterval);
+    metronomeInterval = null;
+  }
+}
+

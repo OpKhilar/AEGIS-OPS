@@ -11,6 +11,7 @@ import AlertFeed from './components/AlertFeed';
 import ResponderDirectory from './components/ResponderDirectory';
 import StatusCheckModal from './components/StatusCheckModal';
 import NewIncidentModal from './components/NewIncidentModal';
+import AiTriageChat from './components/AiTriageChat';
 import { 
   fetchIncidents, 
   createIncident, 
@@ -26,16 +27,9 @@ import {
 } from './data/mockEmergencyData';
 import { 
   ShieldAlert, 
-  Radio, 
-  Battery, 
-  Wifi, 
   CheckCircle, 
-  Flame, 
-  LifeBuoy, 
-  Layers,
-  Sparkles,
-  HeartPulse,
-  Users
+  Sparkles, 
+  HeartPulse 
 } from 'lucide-react';
 import { playAlertSound } from './utils/audio';
 
@@ -51,6 +45,8 @@ export default function App() {
   // Modal controls
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
   const [isNewIncidentModalOpen, setIsNewIncidentModalOpen] = useState(false);
+  const [isAiTriageOpen, setIsAiTriageOpen] = useState(false);
+  const [aiTriagePrefill, setAiTriagePrefill] = useState(null);
 
   // Tactical map interaction
   const [userBeacon, setUserBeacon] = useState(null);
@@ -60,6 +56,20 @@ export default function App() {
   const showToast = (msg) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 4000);
+  };
+
+  const handleAskAiTriage = (alert) => {
+    const query = `Urgent triage protocol needed for incident: ${alert.title}. Situation: ${alert.message}. Location: ${alert.zone}`;
+    setAiTriagePrefill(query);
+    setIsAiTriageOpen(true);
+    if (soundEnabled) playAlertSound('advisory');
+    showToast(`AEGIS-MEDIC dispatched for: ${alert.title}`);
+  };
+
+  const handleOpenAiTriageWithChip = (query) => {
+    setAiTriagePrefill(query);
+    setIsAiTriageOpen(true);
+    if (soundEnabled) playAlertSound('advisory');
   };
 
   // Initial load from Supabase service
@@ -210,6 +220,8 @@ export default function App() {
         setSoundEnabled={setSoundEnabled}
         onOpenStatusModal={() => setIsStatusModalOpen(true)}
         onOpenNewIncidentModal={() => setIsNewIncidentModalOpen(true)}
+        onToggleAiTriage={() => setIsAiTriageOpen(prev => !prev)}
+        isAiTriageOpen={isAiTriageOpen}
         threatLevel="DEFCON 2"
         activeIncidentsCount={incidents.length}
         activeRespondersCount={responders.length}
@@ -288,8 +300,79 @@ export default function App() {
                 }
               }}
               onAddAlert={(newAlert) => setAlerts(prev => [newAlert, ...prev])}
+              onAskAiTriage={handleAskAiTriage}
               soundEnabled={soundEnabled}
             />
+
+            {/* AI First-Aid Triage Assistant Card */}
+            <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-rose-950/20 to-slate-950 border border-rose-900/40 shadow-xl space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="p-1 rounded-lg bg-rose-500/20 text-rose-400">
+                    <HeartPulse className="w-4 h-4 animate-pulse" />
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold uppercase tracking-wider text-white">
+                      AEGIS-MEDIC AI TRIAGE
+                    </span>
+                    <div className="text-[9px] font-mono text-slate-400">
+                      Vercel AI SDK • Gemini & Local Mesh
+                    </div>
+                  </div>
+                </div>
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                  ASSISTANT
+                </span>
+              </div>
+
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Emergency clinical triage guidance for CPR, severe hemorrhage, choking, and burns. Resilient zero-downtime offline fallback enabled.
+              </p>
+
+              {/* Fast triage chip buttons */}
+              <div className="grid grid-cols-2 gap-1.5 text-[11px] font-mono">
+                <button
+                  onClick={() => handleOpenAiTriageWithChip('How to perform CPR on an adult')}
+                  className="px-2 py-1.5 rounded-lg bg-slate-900/90 hover:bg-rose-500/20 hover:text-white text-slate-300 border border-slate-800 text-left transition-all flex items-center justify-between"
+                >
+                  <span>🚨 Adult CPR</span>
+                  <span className="text-[9px] text-rose-400 font-bold">110 BPM</span>
+                </button>
+                <button
+                  onClick={() => handleOpenAiTriageWithChip('Step-by-step guide to stop severe arterial bleeding')}
+                  className="px-2 py-1.5 rounded-lg bg-slate-900/90 hover:bg-rose-500/20 hover:text-white text-slate-300 border border-slate-800 text-left transition-all flex items-center justify-between"
+                >
+                  <span>🩸 Bleeding</span>
+                  <span className="text-[9px] text-amber-400 font-bold">CRIT</span>
+                </button>
+                <button
+                  onClick={() => handleOpenAiTriageWithChip('Choking adult Heimlich maneuver instructions')}
+                  className="px-2 py-1.5 rounded-lg bg-slate-900/90 hover:bg-rose-500/20 hover:text-white text-slate-300 border border-slate-800 text-left transition-all flex items-center justify-between"
+                >
+                  <span>🫁 Choking</span>
+                  <span className="text-[9px] text-sky-400 font-bold">AIRWAY</span>
+                </button>
+                <button
+                  onClick={() => handleOpenAiTriageWithChip('First aid for severe burns and scalds')}
+                  className="px-2 py-1.5 rounded-lg bg-slate-900/90 hover:bg-rose-500/20 hover:text-white text-slate-300 border border-slate-800 text-left transition-all flex items-center justify-between"
+                >
+                  <span>🔥 Burns</span>
+                  <span className="text-[9px] text-orange-400 font-bold">COOL</span>
+                </button>
+              </div>
+
+              <button
+                onClick={() => {
+                  setAiTriagePrefill(null);
+                  setIsAiTriageOpen(true);
+                  if (soundEnabled) playAlertSound('advisory');
+                }}
+                className="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-rose-950/50 flex items-center justify-center gap-2"
+              >
+                <HeartPulse className="w-3.5 h-3.5" />
+                <span>Open First-Aid AI Terminal</span>
+              </button>
+            </div>
 
             {/* Quick Action Triage Card */}
             <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-slate-950 border border-slate-800/90 shadow-xl space-y-3">
@@ -362,6 +445,45 @@ export default function App() {
           <CheckCircle className="w-4 h-4 text-emerald-400" />
           <span>{toastMessage}</span>
         </div>
+      )}
+
+      {/* Full Tactical AI First-Aid Triage Assistant Modal / Drawer */}
+      {isAiTriageOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="w-full max-w-3xl h-[88vh] max-h-[800px] flex flex-col">
+            <AiTriageChat
+              isOpen={true}
+              onClose={() => {
+                setIsAiTriageOpen(false);
+                setAiTriagePrefill(null);
+              }}
+              soundEnabled={soundEnabled}
+              prefillQuery={aiTriagePrefill}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Floating Tactical AI Quick Trigger Button (When modal closed) */}
+      {!isAiTriageOpen && (
+        <button
+          onClick={() => {
+            setAiTriagePrefill(null);
+            setIsAiTriageOpen(true);
+            if (soundEnabled) playAlertSound('advisory');
+          }}
+          title="Open AEGIS-MEDIC AI First-Aid Triage Assistant"
+          className="fixed bottom-6 right-6 z-40 px-4 py-3 rounded-2xl bg-gradient-to-r from-rose-600 via-rose-700 to-slate-900 hover:from-rose-500 hover:to-rose-600 text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2.5 shadow-2xl shadow-rose-950/80 border border-rose-400/40 hover:scale-105 active:scale-95 transition-all group"
+        >
+          <div className="relative flex items-center justify-center w-6 h-6 rounded-lg bg-rose-500/30">
+            <HeartPulse className="w-4 h-4 text-rose-300 animate-pulse group-hover:scale-110 transition-transform" />
+            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+          </div>
+          <span>AI First-Aid</span>
+          <span className="hidden sm:inline-block px-1.5 py-0.5 rounded text-[9px] bg-black/50 text-emerald-300 font-mono border border-emerald-500/30">
+            TRIAGE
+          </span>
+        </button>
       )}
 
     </div>
