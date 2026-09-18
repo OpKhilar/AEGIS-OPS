@@ -3,6 +3,8 @@ import QuickActionsCard from './components/QuickActionsCard';
 import AiTriageModal from './components/AiTriageModal';
 import AppFooter from './components/AppFooter';
 import LoadingPanel from './components/LoadingPanel';
+import ThemeToggle from './components/ThemeToggle';
+import { useTheme } from './hooks/useTheme';
 import { initSyncListener } from './utils/syncService';
 import { registerSW } from 'virtual:pwa-register';
 
@@ -38,6 +40,7 @@ import {
 import { playAlertSound } from './utils/audio';
 
 export default function App() {
+  const { theme, toggleTheme } = useTheme();
   const [incidents, setIncidents] = useState([]);
   const [resources, setResources] = useState([]);
   const [responders, setResponders] = useState(INITIAL_RESPONDERS);
@@ -212,10 +215,12 @@ export default function App() {
   const currentSheltered = shelterResources.reduce((acc, s) => acc + (s.capacityCurrent || 0), 0);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-rose-500 selection:text-white">
+    <div className="min-h-screen bg-app text-ink flex flex-col font-sans selection:bg-rose-500 selection:text-white">
       
       {/* 1. Command Bar Navbar */}
       <Navbar
+        theme={theme}
+        onToggleTheme={toggleTheme}
         soundEnabled={soundEnabled}
         setSoundEnabled={setSoundEnabled}
         onOpenStatusModal={() => setIsStatusModalOpen(true)}
@@ -250,7 +255,7 @@ export default function App() {
               fallback={
                 <LoadingPanel
                   label="Loading Tactical Map…"
-                  className="w-full h-[460px] lg:h-[560px] rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 shadow-2xl flex items-center justify-center"
+                  className="w-full h-[460px] lg:h-[560px] rounded-2xl overflow-hidden border border-line bg-app-2 shadow-2xl flex items-center justify-center"
                 />
               }
             >
@@ -307,8 +312,7 @@ export default function App() {
           <Suspense
             fallback={
               <LoadingPanel
-                label="Loading Responder Directory…"
-                className="w-full bg-slate-950/80 rounded-2xl border border-slate-800 shadow-2xl p-5 space-y-3"
+                label="Loading Responder Directory…"                  className="w-full bg-surface rounded-2xl border border-line shadow-2xl p-5 space-y-3"
               />
             }
           >
@@ -351,7 +355,7 @@ export default function App() {
 
       {/* Floating Tactical Notification Toast */}
       {toastMessage && (
-        <div className="fixed bottom-5 right-5 z-50 p-3.5 rounded-xl bg-slate-900/95 border border-slate-700 text-xs font-mono text-slate-100 shadow-2xl flex items-center gap-2.5 animate-bounce">
+        <div className="fixed bottom-5 right-5 z-50 p-3.5 rounded-xl bg-elevated border border-line-strong text-xs font-mono text-ink shadow-2xl flex items-center gap-2.5 animate-bounce">
           <CheckCircle className="w-4 h-4 text-emerald-400" />
           <span>{toastMessage}</span>
         </div>
@@ -377,7 +381,7 @@ export default function App() {
             if (soundEnabled) playAlertSound('advisory');
           }}
           title="Open AEGIS-MEDIC AI First-Aid Triage Assistant"
-          className="fixed bottom-6 right-6 z-40 px-4 py-3 rounded-2xl bg-gradient-to-r from-rose-600 via-rose-700 to-slate-900 hover:from-rose-500 hover:to-rose-600 text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2.5 shadow-2xl shadow-rose-950/80 border border-rose-400/40 hover:scale-105 active:scale-95 transition-all group"
+          className="fixed bottom-6 right-6 z-40 px-4 py-3 rounded-2xl bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2.5 shadow-2xl shadow-rose-950/80 border border-rose-400/40 hover:scale-105 active:scale-95 transition-all group"
         >
           <div className="relative flex items-center justify-center w-6 h-6 rounded-lg bg-rose-500/30">
             <HeartPulse className="w-4 h-4 text-rose-300 animate-pulse group-hover:scale-110 transition-transform" />

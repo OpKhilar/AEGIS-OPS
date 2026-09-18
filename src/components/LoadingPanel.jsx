@@ -5,7 +5,7 @@ import { REGION } from '../config/region';
 export default function LoadingPanel({ label, className = '' }) {
   return (
     <div className={className} role="status" aria-live="polite">
-      <span className="text-[11px] font-mono uppercase tracking-widest text-slate-500 animate-pulse">
+      <span className="text-[11px] font-mono uppercase tracking-widest text-ink-3 animate-pulse">
         {label}
       </span>
     </div>

@@ -69,7 +69,7 @@ export default function SosBanner({
   };
 
   return (
-    <section className="relative w-full overflow-hidden border-b border-rose-950/60 bg-gradient-to-r from-rose-950/80 via-slate-950 to-slate-950 text-slate-100 shadow-xl">
+    <section className="relative w-full overflow-hidden border-b border-line bg-app text-ink shadow-xl">
       {/* Background ambient strobe when SOS is active */}
       {sosActive && (
         <div className="absolute inset-0 bg-rose-600/10 pointer-events-none animate-pulse"></div>
@@ -89,7 +89,7 @@ export default function SosBanner({
             <div className="flex-1 min-w-0 overflow-hidden">
               <div 
                 key={currentIdx}
-                className="text-xs sm:text-sm font-medium text-slate-200 truncate transition-all duration-500 ease-out flex items-center gap-2"
+                className="text-xs sm:text-sm font-medium text-ink-2 truncate transition-all duration-500 ease-out flex items-center gap-2"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-ping"></span>
                 <span>{broadcastMessages[currentIdx] || 'ALL UNITS MAINTAIN RADIO SILENCE EXCEPT PRIORITY TRAFFIC'}</span>
@@ -98,23 +98,23 @@ export default function SosBanner({
           </div>
 
           {/* Tactical Counters */}
-          <div className="hidden sm:flex items-center gap-4 text-xs font-mono border-y sm:border-y-0 sm:border-x border-slate-800/80 py-1 sm:py-0 sm:px-4">
-            <div className="flex items-center gap-1.5 text-slate-300">
+          <div className="hidden sm:flex items-center gap-4 text-xs font-mono border-y sm:border-y-0 sm:border-x border-line py-1 sm:py-0 sm:px-4">
+            <div className="flex items-center gap-1.5 text-ink-2">
               <Flame className="w-3.5 h-3.5 text-rose-500" />
-              <span className="text-slate-400">Incidents:</span>
-              <span className="font-bold text-rose-400">{incidentsCount}</span>
+              <span className="text-ink-3">Incidents:</span>
+              <span className="font-bold text-rose-600 dark:text-rose-400">{incidentsCount}</span>
             </div>
-            <div className="w-px h-3 bg-slate-800"></div>
-            <div className="flex items-center gap-1.5 text-slate-300">
-              <Radio className="w-3.5 h-3.5 text-sky-400" />
-              <span className="text-slate-400">Responders:</span>
-              <span className="font-bold text-sky-400">{respondersCount}</span>
+            <div className="w-px h-3 bg-line-strong"></div>
+            <div className="flex items-center gap-1.5 text-ink-2">
+              <Radio className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
+              <span className="text-ink-3">Responders:</span>
+              <span className="font-bold text-sky-600 dark:text-sky-400">{respondersCount}</span>
             </div>
-            <div className="w-px h-3 bg-slate-800"></div>
-            <div className="flex items-center gap-1.5 text-slate-300">
-              <LifeBuoy className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="text-slate-400">Sheltered:</span>
-              <span className="font-bold text-emerald-400">{shelteredCount}</span>
+            <div className="w-px h-3 bg-line-strong"></div>
+            <div className="flex items-center gap-1.5 text-ink-2">
+              <LifeBuoy className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span className="text-ink-3">Sheltered:</span>
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">{shelteredCount}</span>
             </div>
           </div>
 

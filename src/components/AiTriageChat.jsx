@@ -248,14 +248,14 @@ export default function AiTriageChat({
   if (!isOpen) return null;
 
   return (
-    <div className={`flex flex-col bg-slate-950/95 border border-slate-800 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 ${
+    <div className={`flex flex-col bg-app/95 border border-line backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 ${
       isExpanded 
         ? 'fixed inset-4 z-50 sm:inset-10' 
         : 'w-full h-[620px]'
     }`}>
       
       {/* 1. Tactical Command Header */}
-      <header className="px-4 py-3 bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 border-b border-slate-800 flex items-center justify-between gap-2 shrink-0">
+      <header className="px-4 py-3 bg-elevated/70 border-b border-line flex items-center justify-between gap-2 shrink-0">
         
         {/* Identity & Status */}
         <div className="flex items-center gap-2.5">
@@ -268,10 +268,10 @@ export default function AiTriageChat({
 
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold font-mono tracking-wider text-white">
+              <span className="text-xs font-bold font-mono tracking-wider text-ink">
                 AEGIS<span className="text-rose-500">-MEDIC</span>
               </span>
-              <span className="px-1.5 py-0.2 rounded text-[9px] font-mono bg-rose-500/20 text-rose-300 border border-rose-500/30">
+              <span className="px-1.5 py-0.2 rounded text-[9px] font-mono bg-rose-500/20 text-rose-600 dark:text-rose-300 border border-rose-500/30">
                 TRIAGE AI
               </span>
             </div>
@@ -279,12 +279,12 @@ export default function AiTriageChat({
             {/* Network / Model Mode Badge */}
             <div className="flex items-center gap-1.5 text-[10px] font-mono mt-0.5">
               {isActuallyOffline ? (
-                <span className="inline-flex items-center gap-1 text-amber-400">
+                <span className="inline-flex items-center gap-1 text-amber-600 dark:text-amber-400">
                   <WifiOff className="w-2.5 h-2.5" />
                   <span>LOCAL MESH (OFFLINE FALLBACK)</span>
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1 text-emerald-400">
+                <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
                   <Wifi className="w-2.5 h-2.5" />
                   <span>LIVE (GEMINI 1.5 FLASH)</span>
                 </span>
@@ -303,7 +303,7 @@ export default function AiTriageChat({
             className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-[11px] font-mono font-bold transition-all ${
               isMetronomeActive 
                 ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/40 ring-2 ring-rose-400 animate-pulse' 
-                : 'bg-slate-900 text-slate-300 border border-slate-800 hover:text-white hover:border-slate-700'
+                : 'bg-app-2 text-ink-2 border border-line hover:text-ink'
             }`}
           >
             <Activity className={`w-3.5 h-3.5 ${metronomeBeat ? 'scale-125 text-white' : ''}`} />
@@ -317,10 +317,10 @@ export default function AiTriageChat({
             className={`flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-mono transition-all border ${
               isOfflineSimulated 
                 ? 'bg-amber-500/20 text-amber-300 border-amber-500/50' 
-                : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-slate-200'
+                : 'bg-app-2 text-ink-3 border-line hover:text-ink-2'
             }`}
           >
-            {isOfflineSimulated ? <WifiOff className="w-3 h-3 text-amber-400" /> : <Wifi className="w-3 h-3" />}
+            {isOfflineSimulated ? <WifiOff className="w-3 h-3 text-amber-600 dark:text-amber-400" /> : <Wifi className="w-3 h-3" />}
             <span className="hidden md:inline">{isOfflineSimulated ? 'OFFLINE SIM ON' : 'SIM OFFLINE'}</span>
           </button>
 
@@ -328,16 +328,16 @@ export default function AiTriageChat({
           <button
             onClick={() => setShowKeyModal(true)}
             title="Configure Google Gemini API Key"
-            className="p-1.5 rounded-md bg-slate-900 text-slate-400 border border-slate-800 hover:text-slate-200 hover:border-slate-700"
+            className="p-1.5 rounded-md bg-app-2 text-ink-3 border border-line hover:text-ink-2 hover:border-line-strong"
           >
-            <Key className="w-3.5 h-3.5 text-cyan-400" />
+            <Key className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
           </button>
 
           {/* Clear History */}
           <button
             onClick={handleClearChat}
             title="Clear Chat Stream"
-            className="p-1.5 rounded-md bg-slate-900 text-slate-400 border border-slate-800 hover:text-rose-400 hover:border-rose-900"
+            className="p-1.5 rounded-md bg-app-2 text-ink-3 border border-line hover:text-rose-500 hover:border-rose-500/40"
           >
             <Trash2 className="w-3.5 h-3.5" />
           </button>
@@ -346,7 +346,7 @@ export default function AiTriageChat({
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             title={isExpanded ? 'Restore window size' : 'Expand terminal full size'}
-            className="p-1.5 rounded-md bg-slate-900 text-slate-400 border border-slate-800 hover:text-slate-200"
+            className="p-1.5 rounded-md bg-app-2 text-ink-3 border border-line hover:text-ink-2"
           >
             {isExpanded ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
           </button>
@@ -356,7 +356,7 @@ export default function AiTriageChat({
             <button
               onClick={onClose}
               title="Close Triage Assistant"
-              className="p-1.5 rounded-md bg-slate-900 text-slate-400 border border-slate-800 hover:text-rose-400"
+              className="p-1.5 rounded-md bg-app-2 text-ink-3 border border-line hover:text-rose-500"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -368,16 +368,16 @@ export default function AiTriageChat({
 
       {/* 2. Active CPR Metronome HUD Banner (if active) */}
       {isMetronomeActive && (
-        <div className="bg-gradient-to-r from-rose-950 via-rose-900 to-slate-950 border-b border-rose-800/80 px-4 py-2 flex items-center justify-between">
+        <div className="bg-gradient-to-r from-rose-100 via-rose-50 to-app border-b border-rose-300 dark:from-rose-950 dark:via-rose-900 dark:to-slate-950 dark:border-rose-800/80 px-4 py-2 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <span className={`w-3 h-3 rounded-full bg-rose-500 shadow-md shadow-rose-500 transition-transform ${
               metronomeBeat ? 'scale-150 bg-white ring-4 ring-rose-400/50' : 'scale-90 opacity-75'
             }`} />
             <div>
-              <div className="text-xs font-bold text-white font-mono">
+              <div className="text-xs font-bold text-ink font-mono">
                 CPR PACEMAKER: 110 BPM RHYTHM
               </div>
-              <div className="text-[10px] text-rose-300 font-mono">
+              <div className="text-[10px] text-rose-600 dark:text-rose-300 font-mono">
                 Push at least 2 inches deep. Allow chest to fully recoil.
               </div>
             </div>
@@ -392,8 +392,8 @@ export default function AiTriageChat({
       )}
 
       {/* 3. Priority Quick-Triage Buttons Bar */}
-      <div className="px-3 py-2 bg-slate-900/60 border-b border-slate-800/80 overflow-x-auto no-scrollbar flex items-center gap-1.5 shrink-0">
-        <span className="text-[10px] font-mono text-slate-400 whitespace-nowrap uppercase tracking-wider flex items-center gap-1">
+      <div className="px-3 py-2 bg-elevated/60 border-b border-line overflow-x-auto no-scrollbar flex items-center gap-1.5 shrink-0">
+        <span className="text-[10px] font-mono text-ink-3 whitespace-nowrap uppercase tracking-wider flex items-center gap-1">
           <Sparkles className="w-3 h-3 text-rose-400" />
           <span>Rapid Triage:</span>
         </span>
@@ -402,7 +402,7 @@ export default function AiTriageChat({
             key={idx}
             onClick={() => handleSend(chip.query)}
             disabled={isLoading}
-            className="px-2.5 py-1 rounded-lg text-xs font-mono whitespace-nowrap bg-slate-900/90 text-slate-300 hover:text-white hover:bg-rose-500/20 hover:border-rose-500/50 border border-slate-800 transition-all shadow-sm active:scale-95 disabled:opacity-50"
+            className="px-2.5 py-1 rounded-lg text-xs font-mono whitespace-nowrap bg-app-2/90 text-ink-2 hover:text-ink hover:bg-rose-500/20 hover:border-rose-500/50 border border-line transition-all shadow-sm active:scale-95 disabled:opacity-50"
           >
             {chip.label}
           </button>
@@ -410,7 +410,7 @@ export default function AiTriageChat({
       </div>
 
       {/* 4. Chat Messages Scroll Area */}
-      <div className="flex-1 p-4 overflow-y-auto space-y-4 font-sans text-slate-200 text-sm">
+      <div className="flex-1 p-4 overflow-y-auto space-y-4 font-sans text-ink-2 text-sm">
         {messages.map((msg) => {
           const isAssistant = msg.role === 'assistant';
           const isUser = msg.role === 'user';
@@ -422,10 +422,10 @@ export default function AiTriageChat({
               className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} max-w-full`}
             >
               {/* Message Header Label */}
-              <div className="flex items-center gap-2 mb-1 px-1 text-[10px] font-mono text-slate-400">
+              <div className="flex items-center gap-2 mb-1 px-1 text-[10px] font-mono text-ink-3">
                 {isUser ? (
                   <>
-                    <span className="text-slate-400">{msg.timestamp}</span>
+                    <span className="text-ink-3">{msg.timestamp}</span>
                     <span className="text-rose-400 font-bold">RESCUER COMMAND</span>
                   </>
                 ) : (
@@ -436,16 +436,16 @@ export default function AiTriageChat({
                     </span>
 
                     {msg.source === 'local-protocol' || msg.isFallback ? (
-                      <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px]">
+                      <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-600 dark:text-amber-300 border border-amber-500/40 text-[9px]">
                         LOCAL FALLBACK PROTOCOL
                       </span>
                     ) : (
-                      <span className="px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[9px]">
+                      <span className="px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/40 text-[9px]">
                         GEMINI 1.5 FLASH
                       </span>
                     )}
 
-                    <span className="text-slate-500">{msg.timestamp}</span>
+                    <span className="text-ink-3/80">{msg.timestamp}</span>
                   </>
                 )}
               </div>
@@ -453,37 +453,37 @@ export default function AiTriageChat({
               {/* Message Body Bubble */}
               <div className={`relative group p-4 rounded-2xl max-w-2xl w-full border shadow-xl ${
                 isUser 
-                  ? 'bg-gradient-to-br from-slate-900 to-slate-950 border-slate-700 text-slate-100 rounded-tr-sm' 
-                  : 'bg-gradient-to-br from-slate-900/90 via-slate-950 to-slate-950 border-slate-800 text-slate-200 rounded-tl-sm'
+                  ? 'bg-app-2 border-line-strong text-ink rounded-tr-sm' 
+                  : 'bg-elevated border-line text-ink-2 rounded-tl-sm'
               }`}>
                 
                 {/* Markdown Formatted Content */}
-                <div className="prose prose-invert prose-sm max-w-none space-y-3 leading-relaxed">
+                <div className="prose prose-sm dark:prose-invert max-w-none space-y-3 leading-relaxed">
                   <ReactMarkdown
                     components={{
                       h3: ({ ...props }) => (
-                        <h3 className="text-base font-bold tracking-tight text-white border-b border-slate-800 pb-1 mt-2 mb-2 flex items-center gap-2" {...props} />
+                        <h3 className="text-base font-bold tracking-tight text-ink border-b border-line pb-1 mt-2 mb-2 flex items-center gap-2" {...props} />
                       ),
                       h4: ({ ...props }) => (
-                        <h4 className="text-sm font-semibold text-rose-300 mt-2 mb-1" {...props} />
+                        <h4 className="text-sm font-semibold text-rose-600 dark:text-rose-300 mt-2 mb-1" {...props} />
                       ),
                       ol: ({ ...props }) => (
-                        <ol className="list-decimal pl-5 space-y-2 text-slate-200 font-medium" {...props} />
+                        <ol className="list-decimal pl-5 space-y-2 text-ink font-medium" {...props} />
                       ),
                       ul: ({ ...props }) => (
-                        <ul className="list-disc pl-5 space-y-1.5 text-slate-300" {...props} />
+                        <ul className="list-disc pl-5 space-y-1.5 text-ink-2" {...props} />
                       ),
                       li: ({ ...props }) => (
                         <li className="leading-snug" {...props} />
                       ),
                       blockquote: ({ ...props }) => (
-                        <div className="p-3 my-2 rounded-xl bg-slate-900/80 border-l-4 border-rose-500 text-xs font-mono text-slate-300" {...props} />
+                        <div className="p-3 my-2 rounded-xl bg-app-2/80 border-l-4 border-rose-500 text-xs font-mono text-ink-2" {...props} />
                       ),
                       strong: ({ ...props }) => (
-                        <strong className="font-bold text-white tracking-wide" {...props} />
+                        <strong className="font-bold text-ink tracking-wide" {...props} />
                       ),
                       code: ({ ...props }) => (
-                        <code className="px-1.5 py-0.5 rounded bg-slate-800 text-rose-300 font-mono text-xs" {...props} />
+                        <code className="px-1.5 py-0.5 rounded bg-app-2 text-rose-600 dark:text-rose-300 font-mono text-xs" {...props} />
                       )
                     }}
                   >
@@ -493,7 +493,7 @@ export default function AiTriageChat({
 
                 {/* Tactical Utility Actions (Read Aloud, Metronome, Copy) */}
                 {isAssistant && msg.content && (
-                  <div className="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-[11px] font-mono text-slate-400">
+                  <div className="mt-3 pt-2.5 border-t border-line flex items-center justify-between gap-2 text-[11px] font-mono text-ink-3">
                     
                     <div className="flex items-center gap-2">
                       {/* Read Aloud Button */}
@@ -502,7 +502,7 @@ export default function AiTriageChat({
                         className={`flex items-center gap-1 px-2 py-0.5 rounded border transition-all ${
                           isSpeaking 
                             ? 'bg-rose-500/20 text-rose-300 border-rose-500/50' 
-                            : 'bg-slate-900 hover:text-white border-slate-800'
+                            : 'bg-app-2 hover:text-ink border-line'
                         }`}
                       >
                         {isSpeaking ? <VolumeX className="w-3 h-3 text-rose-400" /> : <Volume2 className="w-3 h-3" />}
@@ -524,7 +524,7 @@ export default function AiTriageChat({
                     {/* Copy Protocol */}
                     <button
                       onClick={() => handleCopy(msg.id, msg.content)}
-                      className="flex items-center gap-1 px-2 py-0.5 rounded bg-slate-900 hover:text-white border border-slate-800 transition-all"
+                      className="flex items-center gap-1 px-2 py-0.5 rounded bg-app-2 hover:text-ink border border-line transition-all"
                     >
                       {copiedId === msg.id ? (
                         <>
@@ -549,7 +549,7 @@ export default function AiTriageChat({
 
         {/* Streaming / Loading indicator */}
         {isLoading && (
-          <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 animate-pulse py-2">
+          <div className="flex items-center gap-2 text-xs font-mono text-cyan-600 dark:text-cyan-400 animate-pulse py-2">
             <Activity className="w-4 h-4 animate-spin" />
             <span>Analyzing patient condition & synthesizing triage protocol...</span>
           </div>
@@ -564,7 +564,7 @@ export default function AiTriageChat({
           e.preventDefault();
           handleSend();
         }}
-        className="p-3 bg-slate-950 border-t border-slate-800 shrink-0"
+        className="p-3 bg-app border-t border-line shrink-0"
       >
         <div className="relative flex items-center">
           <input
@@ -578,7 +578,7 @@ export default function AiTriageChat({
                 : 'Describe emergency triage scenario (e.g. unconscious adult, heavy bleeding)...'
             }
             disabled={isLoading}
-            className="w-full bg-slate-900 text-slate-100 placeholder-slate-500 text-xs sm:text-sm rounded-xl pl-4 pr-12 py-3 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent font-sans shadow-inner"
+            className="w-full bg-app-2 text-ink placeholder-ink-3 text-xs sm:text-sm rounded-xl pl-4 pr-12 py-3 border border-line-strong focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent font-sans shadow-inner"
           />
 
           <button
@@ -591,13 +591,13 @@ export default function AiTriageChat({
         </div>
 
         {/* Footer Subtext & Offline Resiliency Badge */}
-        <div className="mt-2 flex items-center justify-between text-[10px] font-mono text-slate-500 px-1">
+        <div className="mt-2 flex items-center justify-between text-[10px] font-mono text-ink-3 px-1">
           <div className="flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
             <span>Local Clinical Cache: 14 Offline Guides Armed</span>
           </div>
 
-          <div className="hidden sm:block text-slate-500">
+          <div className="hidden sm:block text-ink-3">
             Press [Enter] to submit • Emergency? Call {REGION.emergencyNumbers.unified} immediately
           </div>
         </div>
@@ -606,29 +606,29 @@ export default function AiTriageChat({
       {/* 6. Google Gemini API Key Settings Popover / Modal */}
       {showKeyModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="w-full max-w-md bg-slate-900 border border-slate-700 rounded-2xl p-5 shadow-2xl space-y-4">
+          <div className="w-full max-w-md bg-elevated border border-line-strong rounded-2xl p-5 shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Key className="w-5 h-5 text-cyan-400" />
+                <Key className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
                 <h3 className="text-sm font-bold text-white font-mono">
                   GOOGLE GEMINI API CONFIGURATION
                 </h3>
               </div>
               <button
                 onClick={() => setShowKeyModal(false)}
-                className="p-1 rounded text-slate-400 hover:text-white"
+                className="p-1 rounded text-ink-3 hover:text-ink"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <p className="text-xs text-ink-3 leading-relaxed">
               Enter your Google Gemini API key to enable live AI triage streaming. If no key is provided, the terminal automatically uses the project default key or seamlessly falls back to pre-loaded local first-aid guides.
             </p>
 
             <form onSubmit={handleSaveApiKey} className="space-y-3">
               <div>
-                <label className="block text-[10px] font-mono text-slate-400 uppercase mb-1">
+                <label className="block text-[10px] font-mono text-ink-3 uppercase mb-1">
                   Gemini API Key
                 </label>
                 <input
@@ -636,7 +636,7 @@ export default function AiTriageChat({
                   value={customKeyInput}
                   onChange={(e) => setCustomKeyInput(e.target.value)}
                   placeholder="AIzaSy..."
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="w-full bg-app-2 border border-line-strong rounded-xl px-3 py-2 text-xs font-mono text-ink placeholder-ink-3 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
               </div>
 
@@ -648,7 +648,7 @@ export default function AiTriageChat({
                     aiTriageService.setApiKey('');
                     setShowKeyModal(false);
                   }}
-                  className="px-3 py-1.5 rounded-lg text-xs font-mono text-slate-400 hover:text-white"
+                  className="px-3 py-1.5 rounded-lg text-xs font-mono text-ink-3 hover:text-ink"
                 >
                   Clear Key
                 </button>

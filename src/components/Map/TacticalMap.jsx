@@ -155,23 +155,23 @@ export default function TacticalMap({
         const marker = L.marker(inc.location, { icon: customIcon }).addTo(map);
 
         const popupContent = `
-          <div class="p-2 space-y-2 text-xs font-sans min-w-[250px]">
-            <div class="flex items-center justify-between gap-2 border-b border-slate-700 pb-1.5">
+          <div class="p-2 space-y-2 text-xs font-sans min-w-[250px] theme-popup">
+            <div class="flex items-center justify-between gap-2 pb-1.5" style="border-bottom: 1px solid var(--line)">
               <span class="font-mono font-bold text-rose-400">${inc.id}</span>
               <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
                 isCritical ? 'bg-rose-500/20 text-rose-400 border border-rose-500/40' : 'bg-amber-500/20 text-amber-400 border border-amber-500/40'
               }">${inc.severity} • ${inc.type.toUpperCase()}</span>
             </div>
-            <div class="font-bold text-slate-100 text-sm leading-tight">${inc.title}</div>
-            <p class="text-slate-400 text-[11px] leading-relaxed">${inc.description}</p>
-            <div class="bg-slate-900/90 rounded p-2 border border-slate-800 space-y-1 text-[11px]">
-              <div class="flex justify-between"><span class="text-slate-400">Casualties:</span> <span class="text-slate-200 font-semibold">${inc.casualties}</span></div>
-              <div class="flex justify-between"><span class="text-slate-400">Address:</span> <span class="text-slate-300">${inc.address}</span></div>
-              <div class="flex justify-between font-mono text-[10px] text-slate-400"><span>Coords:</span> <span class="text-rose-400">${inc.location[0].toFixed(4)}, ${inc.location[1].toFixed(4)}</span></div>
+            <div class="font-bold text-sm leading-tight" style="color: var(--ink)">${inc.title}</div>
+            <p class="text-[11px] leading-relaxed" style="color: var(--ink-3)">${inc.description}</p>
+            <div class="rounded p-2 space-y-1 text-[11px]" style="background: var(--app-bg-2); border: 1px solid var(--line)">
+              <div class="flex justify-between"><span style="color: var(--ink-3)">Casualties:</span> <span class="font-semibold" style="color: var(--ink)">${inc.casualties}</span></div>
+              <div class="flex justify-between"><span style="color: var(--ink-3)">Address:</span> <span style="color: var(--ink-2)">${inc.address}</span></div>
+              <div class="flex justify-between font-mono text-[10px]" style="color: var(--ink-3)"><span>Coords:</span> <span class="text-rose-400">${inc.location[0].toFixed(4)}, ${inc.location[1].toFixed(4)}</span></div>
             </div>
-            <div class="pt-1 flex items-center justify-between text-[10px] text-slate-400 font-mono">
-              <span>Status: <span class="text-emerald-400 font-bold">${inc.status?.toUpperCase()}</span></span>
-              <span class="text-sky-400">${inc.assignedResponders?.length || 0} units assigned</span>
+            <div class="pt-1 flex items-center justify-between text-[10px] font-mono" style="color: var(--ink-3)">
+              <span>Status: <span class="text-emerald-500 font-bold">${inc.status?.toUpperCase()}</span></span>
+              <span class="text-sky-500">${inc.assignedResponders?.length || 0} units assigned</span>
             </div>
           </div>
         `;
@@ -243,27 +243,27 @@ export default function TacticalMap({
       const servicesList = Array.isArray(res.services) ? res.services.join(', ') : (res.services || 'General Emergency Aid');
 
       const popupContent = `
-        <div class="p-2 space-y-2 text-xs font-sans min-w-[260px]">
-          <div class="flex items-center justify-between border-b border-slate-700 pb-1">
+        <div class="p-2 space-y-2 text-xs font-sans min-w-[260px] theme-popup">
+          <div class="flex items-center justify-between pb-1" style="border-bottom: 1px solid var(--line)">
             <span class="font-mono font-bold text-[10px] ${
-              isMedical ? 'text-rose-400' : isVolunteer ? 'text-purple-400' : 'text-emerald-400'
+              isMedical ? 'text-rose-400' : isVolunteer ? 'text-purple-400' : 'text-emerald-500'
             }">${typeLabel}</span>
-            <span class="text-[10px] text-slate-400 font-mono">${percent}% CAPACITY</span>
+            <span class="text-[10px] font-mono" style="color: var(--ink-3)">${percent}% CAPACITY</span>
           </div>
-          <div class="font-bold text-slate-100 text-sm">${res.name}</div>
-          <div class="text-[11px] text-slate-300">📍 ${res.address}</div>
+          <div class="font-bold text-sm" style="color: var(--ink)">${res.name}</div>
+          <div class="text-[11px]" style="color: var(--ink-2)">📍 ${res.address}</div>
           
-          <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+          <div class="w-full rounded-full h-1.5 overflow-hidden" style="background: var(--line-strong)">
             <div class="h-full ${percent > 85 ? 'bg-amber-500' : 'bg-emerald-500'}" style="width: ${percent}%"></div>
           </div>
-          <div class="text-[10px] font-mono text-slate-400">Capacity: ${res.capacityCurrent} / ${res.capacityMax} beds/staff</div>
+          <div class="text-[10px] font-mono" style="color: var(--ink-3)">Capacity: ${res.capacityCurrent} / ${res.capacityMax} beds/staff</div>
 
-          <div class="bg-slate-900 p-2 rounded border border-slate-800 space-y-1">
-            <div class="text-[10px] text-slate-400">Services & Supplies:</div>
-            <div class="text-[11px] text-slate-200">${servicesList}</div>
+          <div class="p-2 rounded space-y-1" style="background: var(--app-bg-2); border: 1px solid var(--line)">
+            <div class="text-[10px]" style="color: var(--ink-3)">Services & Supplies:</div>
+            <div class="text-[11px]" style="color: var(--ink)">${servicesList}</div>
           </div>
 
-          <div class="pt-1 flex items-center justify-between text-[11px] font-mono text-sky-400">
+          <div class="pt-1 flex items-center justify-between text-[11px] font-mono text-sky-500">
             <span>📞 ${res.contact}</span>
           </div>
         </div>
@@ -282,7 +282,7 @@ export default function TacticalMap({
       responders.forEach(resp => {
         const isOnScene = resp.status === 'ON SCENE';
         const isEnRoute = resp.status === 'EN ROUTE';
-        const badgeColor = isOnScene ? 'bg-emerald-500 text-white' : isEnRoute ? 'bg-sky-500 text-white' : 'bg-slate-700 text-slate-200';
+        const badgeColor = isOnScene ? 'bg-emerald-500 text-white' : isEnRoute ? 'bg-sky-500 text-white' : 'bg-line-strong text-ink';
         const ring = isOnScene ? 'ring-emerald-500/50' : isEnRoute ? 'ring-sky-500/50' : 'ring-slate-600/40';
 
         const iconHtml = `
@@ -304,16 +304,16 @@ export default function TacticalMap({
         const marker = L.marker(resp.location, { icon: customIcon }).addTo(map);
 
         const popupContent = `
-          <div class="p-2 space-y-2 text-xs font-sans min-w-[220px]">
-            <div class="flex items-center justify-between border-b border-slate-700 pb-1">
-              <span class="font-mono font-bold text-sky-400">${resp.id}</span>
+          <div class="p-2 space-y-2 text-xs font-sans min-w-[220px] theme-popup">
+            <div class="flex items-center justify-between pb-1" style="border-bottom: 1px solid var(--line)">
+              <span class="font-mono font-bold text-sky-500">${resp.id}</span>
               <span class="px-1.5 py-0.5 rounded text-[9px] font-bold ${
-                isOnScene ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' : 'bg-sky-500/20 text-sky-400 border border-sky-500/40'
+                isOnScene ? 'bg-emerald-500/20 text-emerald-500 border border-emerald-500/40' : 'bg-sky-500/20 text-sky-500 border border-sky-500/40'
               }">${resp.status}</span>
             </div>
-            <div class="font-bold text-slate-100">${resp.name}</div>
-            <div class="text-[11px] text-slate-400">${resp.unitType} • Lead: ${resp.leadOfficer}</div>
-            <div class="bg-slate-900 p-1.5 rounded text-[10px] font-mono text-slate-300 space-y-0.5">
+            <div class="font-bold" style="color: var(--ink)">${resp.name}</div>
+            <div class="text-[11px]" style="color: var(--ink-3)">${resp.unitType} • Lead: ${resp.leadOfficer}</div>
+            <div class="p-1.5 rounded text-[10px] font-mono space-y-0.5" style="background: var(--app-bg-2); color: var(--ink-2)">
               <div>Radio: ${resp.radioChannel}</div>
               <div>Crew: ${resp.crewCount} personnel | Fuel: ${resp.fuelBattery}</div>
             </div>
@@ -351,10 +351,10 @@ export default function TacticalMap({
 
       const userMarker = L.marker(userBeacon.coordinates, { icon: beaconIcon }).addTo(map);
       userMarker.bindPopup(`
-        <div class="p-2 space-y-1 text-xs">
-          <div class="font-bold ${isCritical ? 'text-rose-400' : 'text-emerald-400'}">CITIZEN STATUS PING</div>
-          <div class="text-slate-200">Status: <strong>${userBeacon.status}</strong></div>
-          <div class="text-slate-400 text-[10px]">Synced via Supabase user_status table</div>
+        <div class="p-2 space-y-1 text-xs theme-popup">
+          <div class="font-bold ${isCritical ? 'text-rose-400' : 'text-emerald-500'}">CITIZEN STATUS PING</div>
+          <div style="color: var(--ink)">Status: <strong>${userBeacon.status}</strong></div>
+          <div class="text-[10px]" style="color: var(--ink-3)">Synced via Supabase user_status table</div>
         </div>
       `).openPopup();
 
@@ -409,7 +409,7 @@ export default function TacticalMap({
   const totalVolunteers = resources.filter(r => r.type === 'volunteer_hub').length;
 
   return (
-    <div className="relative w-full h-[460px] lg:h-[560px] rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 shadow-2xl">
+    <div className="relative w-full h-[460px] lg:h-[560px] rounded-2xl overflow-hidden border border-line bg-app-2 shadow-2xl">
       
       {/* Map DOM Element */}
       <div ref={mapContainerRef} className="w-full h-full z-0" />
@@ -418,13 +418,13 @@ export default function TacticalMap({
       <div className="absolute top-3 left-3 right-3 z-10 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
         
         {/* Layer Toggles */}
-        <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-xl bg-slate-950/90 backdrop-blur-md border border-slate-800 shadow-xl pointer-events-auto text-xs font-mono">
+        <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-xl bg-app/95 backdrop-blur-md border border-line shadow-xl pointer-events-auto text-xs font-mono">
           
           {/* Incidents Toggle */}
           <button
             onClick={() => setShowIncidents(!showIncidents)}
             className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-all ${
-              showIncidents ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40 font-bold' : 'text-slate-500 hover:text-slate-300'
+              showIncidents ? 'bg-rose-500/20 text-rose-600 dark:text-rose-300 border border-rose-500/40 font-bold' : 'text-ink-3 hover:text-ink-2'
             }`}
           >
             <Flame className="w-3.5 h-3.5 text-rose-500" />
@@ -435,7 +435,7 @@ export default function TacticalMap({
           <button
             onClick={() => setShowShelters(!showShelters)}
             className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-all ${
-              showShelters ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold' : 'text-slate-500 hover:text-slate-300'
+              showShelters ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 border border-emerald-500/40 font-bold' : 'text-ink-3 hover:text-ink-2'
             }`}
           >
             <Shield className="w-3.5 h-3.5 text-emerald-400" />
@@ -446,7 +446,7 @@ export default function TacticalMap({
           <button
             onClick={() => setShowMedical(!showMedical)}
             className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-all ${
-              showMedical ? 'bg-rose-600/20 text-rose-300 border border-rose-600/40 font-bold' : 'text-slate-500 hover:text-slate-300'
+              showMedical ? 'bg-rose-600/20 text-rose-600 dark:text-rose-300 border border-rose-600/40 font-bold' : 'text-ink-3 hover:text-ink-2'
             }`}
           >
             <HeartPulse className="w-3.5 h-3.5 text-rose-400" />
@@ -457,7 +457,7 @@ export default function TacticalMap({
           <button
             onClick={() => setShowVolunteers(!showVolunteers)}
             className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-all ${
-              showVolunteers ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40 font-bold' : 'text-slate-500 hover:text-slate-300'
+              showVolunteers ? 'bg-purple-500/20 text-purple-600 dark:text-purple-300 border border-purple-500/40 font-bold' : 'text-ink-3 hover:text-ink-2'
             }`}
           >
             <Users className="w-3.5 h-3.5 text-purple-400" />
@@ -468,7 +468,7 @@ export default function TacticalMap({
           <button
             onClick={() => setShowResponders(!showResponders)}
             className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-all ${
-              showResponders ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40 font-bold' : 'text-slate-500 hover:text-slate-300'
+              showResponders ? 'bg-sky-500/20 text-sky-600 dark:text-sky-300 border border-sky-500/40 font-bold' : 'text-ink-3 hover:text-ink-2'
             }`}
           >
             <Radio className="w-3.5 h-3.5 text-sky-400" />
@@ -483,7 +483,7 @@ export default function TacticalMap({
           <button
             onClick={() => setTileStyle(tileStyle === 'dark' ? 'osm' : 'dark')}
             title={`Switch to ${tileStyle === 'dark' ? 'OpenStreetMap Standard' : 'Esri Dark Gray Canvas'} view`}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-900/90 text-slate-300 border border-slate-700 hover:text-white text-xs font-mono transition-all shadow-lg"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-elevated/90 text-ink-2 border border-line-strong hover:text-ink text-xs font-mono transition-all shadow-lg"
           >
             <Globe className="w-3.5 h-3.5 text-sky-400" />
             <span>{tileStyle === 'dark' ? 'Dark View' : 'OSM Standard'}</span>
@@ -492,7 +492,7 @@ export default function TacticalMap({
           <button
             onClick={handleResetCenter}
             title="Reset to Command Center"
-            className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-900/90 text-slate-300 border border-slate-700 hover:border-sky-500/60 hover:text-white text-xs font-mono transition-all shadow-lg"
+            className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-elevated/90 text-ink-2 border border-line-strong hover:border-sky-500/60 hover:text-ink text-xs font-mono transition-all shadow-lg"
           >
             <Crosshair className="w-3.5 h-3.5 text-sky-400" />
             <span className="hidden sm:inline">Recenter</span>
@@ -503,14 +503,14 @@ export default function TacticalMap({
 
       {/* Bottom Floating Telemetry Bar */}
       <div className="absolute bottom-3 left-3 z-10 pointer-events-none">
-        <div className="flex items-center gap-3 px-3 py-1.5 rounded-xl bg-slate-950/90 backdrop-blur-md border border-slate-800 text-[11px] font-mono text-slate-400 shadow-xl">
-          <div className="flex items-center gap-1.5 text-slate-300">
+        <div className="flex items-center gap-3 px-3 py-1.5 rounded-xl bg-app/95 backdrop-blur-md border border-line text-[11px] font-mono text-ink-3 shadow-xl">
+          <div className="flex items-center gap-1.5 text-ink-2">
             <Navigation className="w-3 h-3 text-emerald-400 rotate-45" />
             <span>GRID COORDS:</span>
             <span className="text-emerald-400 font-bold">{cursorCoords.lat.toFixed(4)}, {cursorCoords.lng.toFixed(4)}</span>
           </div>
-          <span className="w-px h-3 bg-slate-800"></span>
-          <span className="text-slate-500 hidden sm:inline">
+          <span className="w-px h-3 bg-line-strong"></span>
+          <span className="text-ink-3/80 hidden sm:inline">
             {tileStyle === 'dark' ? 'ESRI DARK GRAY TILES' : 'OPENSTREETMAP TILE LAYER'} • WGS84
           </span>
         </div>

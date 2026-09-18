@@ -14,13 +14,13 @@ const TRIAGE_CHIPS = [
  */
 export default function QuickActionsCard({ onOpenTriageWithChip, onOpenTriage, onCheckIn }) {
   return (
-    <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-rose-950/20 to-slate-950 border border-rose-900/40 shadow-xl space-y-3">
+    <div className="p-4 rounded-2xl bg-surface border border-line shadow-xl space-y-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="p-1 rounded-lg bg-rose-500/20 text-rose-400">
             <HeartPulse className="w-4 h-4 animate-pulse" />
           </div>
-          <span className="text-xs font-bold uppercase tracking-wider text-white">
+          <span className="text-xs font-bold uppercase tracking-wider text-ink">
             AEGIS-MEDIC TRIAGE
           </span>
         </div>
@@ -36,7 +36,7 @@ export default function QuickActionsCard({ onOpenTriageWithChip, onOpenTriage, o
             key={chip.label}
             onClick={() => onOpenTriageWithChip(chip.query)}
             title={chip.title}
-            className="px-1.5 py-1.5 rounded-lg bg-slate-900/90 hover:bg-rose-500/20 hover:text-white text-slate-300 border border-slate-800 transition-all"
+            className="px-1.5 py-1.5 rounded-lg bg-app-2/90 hover:bg-rose-500/20 hover:text-ink text-ink-2 border border-line transition-all"
           >
             {chip.emoji} {chip.label}
           </button>
@@ -53,7 +53,7 @@ export default function QuickActionsCard({ onOpenTriageWithChip, onOpenTriage, o
 
       <button
         onClick={onCheckIn}
-        className="w-full py-2 px-3 rounded-xl bg-slate-900/90 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-900/50 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
+        className="w-full py-2 px-3 rounded-xl bg-elevated/90 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-700/50 dark:border-emerald-900/50 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
       >
         <ShieldAlert className="w-3.5 h-3.5" />
         <span>Check In My Status</span>

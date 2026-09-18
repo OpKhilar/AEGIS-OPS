@@ -41,7 +41,7 @@ export default function ResponderDirectory({
       case 'DISPATCHED':
         return 'bg-amber-500/20 text-amber-400 border-amber-500/40';
       default:
-        return 'bg-slate-800 text-slate-400 border-slate-700';
+        return 'bg-app-2 text-ink-3 border-line';
     }
   };
 
@@ -55,48 +55,48 @@ export default function ResponderDirectory({
   };
 
   return (
-    <div className="w-full bg-slate-950/80 backdrop-blur-md rounded-2xl border border-slate-800 shadow-2xl p-4 sm:p-5 space-y-4">
+    <div className="w-full bg-surface backdrop-blur-md rounded-2xl border border-line shadow-2xl p-4 sm:p-5 space-y-4">
       
       {/* Header & Filter Controls */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800/80 pb-3">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-line pb-3">
         <div className="flex items-center gap-2.5">
           <div className="p-2 rounded-xl bg-sky-500/10 text-sky-400 border border-sky-500/30">
             <Users className="w-4 h-4" />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-slate-100 flex items-center gap-2">
+            <h2 className="text-sm font-bold text-ink flex items-center gap-2">
               <span>Tactical Responder Directory</span>
               <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-sky-500/20 text-sky-300 font-bold">
                 {responders.length} UNITS
               </span>
             </h2>
-            <p className="text-[10px] text-slate-400 font-mono">Field Units, Medevac & Specialized Emergency Teams</p>
+            <p className="text-[10px] text-ink-3 font-mono">Field Units, Medevac & Specialized Emergency Teams</p>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
           {/* Search */}
           <div className="relative flex-1 sm:w-56">
-            <Search className="w-3.5 h-3.5 text-slate-500 absolute left-2.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-3.5 h-3.5 text-ink-3 absolute left-2.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search units, officers..."
-              className="w-full bg-slate-900 text-slate-200 text-xs pl-8 pr-2.5 py-1.5 rounded-lg border border-slate-800 focus:outline-none focus:border-sky-500 font-sans"
+              className="w-full bg-app-2 text-ink-2 text-xs pl-8 pr-2.5 py-1.5 rounded-lg border border-line focus:outline-none focus:border-sky-500 font-sans"
             />
           </div>
 
           {/* Status Filter Tabs */}
-          <div className="flex items-center gap-1 bg-slate-900 p-1 rounded-lg border border-slate-800 text-[11px] font-mono">
+          <div className="flex items-center gap-1 bg-app-2 p-1 rounded-lg border border-line text-[11px] font-mono">
             {['ALL', 'ON SCENE', 'EN ROUTE', 'AVAILABLE'].map((s) => (
               <button
                 key={s}
                 onClick={() => setFilter(s)}
                 className={`px-2.5 py-1 rounded transition-all ${
                   filter === s 
-                    ? 'bg-slate-800 text-white font-bold' 
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-line-strong text-ink font-bold' 
+                    : 'text-ink-3 hover:text-ink-2'
                 }`}
               >
                 {s}
@@ -114,12 +114,12 @@ export default function ResponderDirectory({
           return (
             <div
               key={resp.id}
-              className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800/80 hover:border-sky-500/50 hover:bg-slate-900/90 transition-all space-y-3 group shadow-lg"
+              className="p-3.5 rounded-xl bg-elevated/60 border border-line hover:border-sky-500/50 hover:bg-elevated transition-all space-y-3 group shadow-lg"
             >
               {/* Unit Header */}
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-sm shadow">
+                  <div className="w-8 h-8 rounded-lg bg-app-2 border border-line-strong flex items-center justify-center text-sm shadow">
                     {getUnitIcon(resp.unitType)}
                   </div>
                   <div>
@@ -129,7 +129,7 @@ export default function ResponderDirectory({
                         {resp.status}
                       </span>
                     </div>
-                    <h3 className="text-xs font-bold text-slate-200 group-hover:text-white transition-colors">
+                    <h3 className="text-xs font-bold text-ink-2 group-hover:text-ink transition-colors">
                       {resp.name}
                     </h3>
                   </div>
@@ -137,26 +137,24 @@ export default function ResponderDirectory({
 
                 <button
                   onClick={() => onSelectResponder && onSelectResponder(resp)}
-                  title="Center unit on Tactical Map"
-                  className="p-1.5 rounded-lg bg-slate-800/80 hover:bg-sky-500/20 text-slate-400 hover:text-sky-300 transition-colors"
-                >
+                  title="Center unit on Tactical Map"className="p-1.5 rounded-lg bg-app-2/80 hover:bg-sky-500/20 text-ink-3 hover:text-sky-400 transition-colors">
                   <Crosshair className="w-3.5 h-3.5" />
                 </button>
               </div>
 
               {/* Officer & Specs */}
-              <div className="bg-slate-950/60 rounded-lg p-2 border border-slate-800/60 text-[11px] space-y-1 font-mono">
-                <div className="flex justify-between text-slate-300">
-                  <span className="text-slate-500">Lead:</span>
-                  <span className="text-slate-200 font-sans font-semibold">{resp.leadOfficer}</span>
+              <div className="bg-app-2/60 rounded-lg p-2 border border-line text-[11px] space-y-1 font-mono">
+                <div className="flex justify-between text-ink-3">
+                  <span className="text-ink-3">Lead:</span>
+                  <span className="text-ink font-sans font-semibold">{resp.leadOfficer}</span>
                 </div>
-                <div className="flex justify-between text-slate-300">
-                  <span className="text-slate-500">Channel:</span>
+                <div className="flex justify-between text-ink-3">
+                  <span className="text-ink-3">Channel:</span>
                   <span className="text-sky-300 font-bold">{resp.radioChannel}</span>
                 </div>
-                <div className="flex justify-between text-slate-300">
-                  <span className="text-slate-500">Crew / Fuel:</span>
-                  <span className="text-slate-300">{resp.crewCount} personnel • {resp.fuelBattery}</span>
+                <div className="flex justify-between text-ink-3">
+                  <span className="text-ink-3">Crew / Fuel:</span>
+                  <span className="text-ink-2">{resp.crewCount} personnel • {resp.fuelBattery}</span>
                 </div>
               </div>
 
@@ -164,27 +162,25 @@ export default function ResponderDirectory({
               <div className="flex flex-wrap gap-1">
                 {resp.equipment.map((eq, i) => (
                   <span
-                    key={i}
-                    className="px-1.5 py-0.5 rounded bg-slate-800/80 text-[10px] text-slate-400 border border-slate-700/60"
-                  >
+                    key={i}className="px-1.5 py-0.5 rounded bg-app-2/80 text-[10px] text-ink-3 border border-line">
                     {eq}
                   </span>
                 ))}
               </div>
 
               {/* Assignment or Comms Toggle */}
-              <div className="pt-1 flex items-center justify-between gap-2 border-t border-slate-800/60 text-xs">
+              <div className="pt-1 flex items-center justify-between gap-2 border-t border-line text-xs">
                 {resp.assignedIncidentId ? (
                   <button
                     onClick={() => onFocusIncident && onFocusIncident(resp.assignedIncidentId)}
-                    className="flex items-center gap-1 text-[11px] font-mono text-rose-400 hover:text-rose-300 transition-colors"
+                    className="flex items-center gap-1 text-[11px] font-mono text-rose-600 dark:text-rose-400 hover:text-rose-500 transition-colors"
                   >
                     <Flame className="w-3 h-3" />
                     <span>Assigned: {resp.assignedIncidentId}</span>
                   </button>
                 ) : (
-                  <span className="text-[11px] font-mono text-emerald-400 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  <span className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400"></span>
                     Ready for Tasking
                   </span>
                 )}
@@ -193,8 +189,8 @@ export default function ResponderDirectory({
                   onClick={() => setActiveCommsUnit(isCommsOpen ? null : resp.id)}
                   className={`px-2 py-1 rounded text-[11px] font-mono transition-all flex items-center gap-1 ${
                     isCommsOpen
-                      ? 'bg-sky-500 text-slate-950 font-bold'
-                      : 'bg-slate-800 text-slate-300 hover:text-white'
+                      ? 'bg-sky-600 dark:bg-sky-500 text-white dark:text-slate-950 font-bold'
+                      : 'bg-app-2 text-ink-2 hover:text-ink'
                   }`}
                 >
                   <PhoneCall className="w-3 h-3" />
@@ -204,9 +200,9 @@ export default function ResponderDirectory({
 
               {/* Live Comms Drawer */}
               {isCommsOpen && (
-                <div className="p-2 rounded bg-sky-950/40 border border-sky-500/40 text-[11px] font-mono space-y-1 animate-fadeIn">
+                <div className="p-2 rounded bg-sky-500/10 border border-sky-500/40 text-[11px] font-mono space-y-1 animate-fadeIn">
                   <div className="text-sky-300 font-bold">TACTICAL AUDIO CHANNEL OPEN</div>
-                  <div className="text-slate-400 text-[10px]">Encrypted P25 trunking on {resp.radioChannel}. Ready for voice dispatch.</div>
+                  <div className="text-ink-3 text-[10px]">Encrypted P25 trunking on {resp.radioChannel}. Ready for voice dispatch.</div>
                 </div>
               )}
 

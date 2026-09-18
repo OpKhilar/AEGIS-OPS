@@ -12,13 +12,13 @@ export default function AiTriageModal({ isOpen, onClose, soundEnabled, prefillQu
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-app/80 backdrop-blur-md animate-in fade-in duration-200">
       <div className="w-full max-w-3xl h-[88vh] max-h-[800px] flex flex-col">
         <Suspense
           fallback={
             <LoadingPanel
               label="Loading AEGIS-MEDIC…"
-              className="w-full h-full rounded-2xl border border-slate-800 bg-slate-950 flex items-center justify-center"
+              className="w-full h-full rounded-2xl border border-line bg-app-2 flex items-center justify-center"
             />
           }
         >
