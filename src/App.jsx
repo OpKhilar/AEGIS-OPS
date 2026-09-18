@@ -1,4 +1,8 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
+import QuickActionsCard from './components/QuickActionsCard';
+import AiTriageModal from './components/AiTriageModal';
+import AppFooter from './components/AppFooter';
+import LoadingPanel from './components/LoadingPanel';
 import { initSyncListener } from './utils/syncService';
 import { registerSW } from 'virtual:pwa-register';
 
@@ -6,7 +10,6 @@ registerSW({ immediate: true });
 
 // Code-split heavy, below-the-fold components: they load as separate chunks on demand
 const TacticalMap = lazy(() => import('./components/Map/TacticalMap'));
-const AiTriageChat = lazy(() => import('./components/AiTriageChat'));
 import Navbar from './components/Navbar';
 import SosBanner from './components/SosBanner';
 import AlertFeed from './components/AlertFeed';
@@ -29,13 +32,10 @@ import {
   BROADCAST_TICKERS 
 } from './data/mockEmergencyData';
 import { 
-  ShieldAlert, 
-  CheckCircle, 
-  Sparkles, 
-  HeartPulse 
+  CheckCircle,
+  HeartPulse
 } from 'lucide-react';
 import { playAlertSound } from './utils/audio';
-import { REGION } from './config/region';
 
 export default function App() {
   const [incidents, setIncidents] = useState([]);
@@ -248,9 +248,10 @@ export default function App() {
           <div className="lg:col-span-8 flex flex-col gap-4">
             <Suspense
               fallback={
-                <div className="w-full h-[460px] lg:h-[560px] rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 shadow-2xl flex items-center justify-center">
-                  <span className="text-[11px] font-mono uppercase tracking-widest text-slate-500 animate-pulse">Loading Tactical Map…</span>
-                </div>
+                <LoadingPanel
+                  label="Loading Tactical Map…"
+                  className="w-full h-[460px] lg:h-[560px] rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 shadow-2xl flex items-center justify-center"
+                />
               }
             >
             <TacticalMap
@@ -287,73 +288,15 @@ export default function App() {
             />
 
             {/* Quick Actions: AI Triage + Citizen Check-In (consolidated) */}
-            <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-rose-950/20 to-slate-950 border border-rose-900/40 shadow-xl space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="p-1 rounded-lg bg-rose-500/20 text-rose-400">
-                    <HeartPulse className="w-4 h-4 animate-pulse" />
-                  </div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-white">
-                    AEGIS-MEDIC TRIAGE
-                  </span>
-                </div>
-                <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-emerald-500/20 text-emerald-400">
-                  112 READY
-                </span>
-              </div>
-
-              {/* Fast triage chip buttons */}
-              <div className="grid grid-cols-4 gap-1.5 text-[10px] font-mono">
-                <button
-                  onClick={() => handleOpenAiTriageWithChip('How to perform CPR on an adult')}
-                  title="Adult CPR guide"
-                  className="px-1.5 py-1.5 rounded-lg bg-slate-900/90 hover:bg-rose-500/20 hover:text-white text-slate-300 border border-slate-800 transition-all"
-                >
-                  🚨 CPR
-                </button>
-                <button
-                  onClick={() => handleOpenAiTriageWithChip('Step-by-step guide to stop severe arterial bleeding')}
-                  title="Severe bleeding guide"
-                  className="px-1.5 py-1.5 rounded-lg bg-slate-900/90 hover:bg-rose-500/20 hover:text-white text-slate-300 border border-slate-800 transition-all"
-                >
-                  🩸 Bleeding
-                </button>
-                <button
-                  onClick={() => handleOpenAiTriageWithChip('Choking adult Heimlich maneuver instructions')}
-                  title="Choking guide"
-                  className="px-1.5 py-1.5 rounded-lg bg-slate-900/90 hover:bg-rose-500/20 hover:text-white text-slate-300 border border-slate-800 transition-all"
-                >
-                  🫁 Choking
-                </button>
-                <button
-                  onClick={() => handleOpenAiTriageWithChip('First aid for severe burns and scalds')}
-                  title="Burns guide"
-                  className="px-1.5 py-1.5 rounded-lg bg-slate-900/90 hover:bg-rose-500/20 hover:text-white text-slate-300 border border-slate-800 transition-all"
-                >
-                  🔥 Burns
-                </button>
-              </div>
-
-              <button
-                onClick={() => {
-                  setAiTriagePrefill(null);
-                  setIsAiTriageOpen(true);
-                  if (soundEnabled) playAlertSound('advisory');
-                }}
-                className="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-rose-950/50 flex items-center justify-center gap-2"
-              >
-                <HeartPulse className="w-3.5 h-3.5" />
-                <span>Open First-Aid Terminal</span>
-              </button>
-
-              <button
-                onClick={() => setIsStatusModalOpen(true)}
-                className="w-full py-2 px-3 rounded-xl bg-slate-900/90 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-900/50 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
-              >
-                <ShieldAlert className="w-3.5 h-3.5" />
-                <span>Check In My Status</span>
-              </button>
-            </div>
+            <QuickActionsCard
+              onOpenTriageWithChip={handleOpenAiTriageWithChip}
+              onOpenTriage={() => {
+                setAiTriagePrefill(null);
+                setIsAiTriageOpen(true);
+                if (soundEnabled) playAlertSound('advisory');
+              }}
+              onCheckIn={() => setIsStatusModalOpen(true)}
+            />
 
           </div>
 
@@ -363,9 +306,10 @@ export default function App() {
         <section className="pt-2">
           <Suspense
             fallback={
-              <div className="w-full bg-slate-950/80 rounded-2xl border border-slate-800 shadow-2xl p-5 space-y-3">
-                <span className="text-[11px] font-mono uppercase tracking-widest text-slate-500 animate-pulse">Loading Responder Directory…</span>
-              </div>
+              <LoadingPanel
+                label="Loading Responder Directory…"
+                className="w-full bg-slate-950/80 rounded-2xl border border-slate-800 shadow-2xl p-5 space-y-3"
+              />
             }
           >
           <ResponderDirectory
@@ -379,12 +323,7 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full border-t border-slate-900 bg-slate-950 py-4 text-center text-xs font-mono text-slate-500">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <div>AEGIS-OPS • {REGION.label}</div>
-          <div className="text-slate-600">{REGION.attribution} • SUPABASE • LEAFLET</div>
-        </div>
-      </footer>
+      <AppFooter />
 
       {/* User Status Check Modal */}
       {isStatusModalOpen && (
@@ -419,29 +358,15 @@ export default function App() {
       )}
 
       {/* Full Tactical AI First-Aid Triage Assistant Modal / Drawer */}
-      {isAiTriageOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="w-full max-w-3xl h-[88vh] max-h-[800px] flex flex-col">
-            <Suspense
-              fallback={
-                <div className="w-full h-full rounded-2xl border border-slate-800 bg-slate-950 flex items-center justify-center">
-                  <span className="text-[11px] font-mono uppercase tracking-widest text-slate-500 animate-pulse">Loading AEGIS-MEDIC…</span>
-                </div>
-              }
-            >
-            <AiTriageChat
-              isOpen={true}
-              onClose={() => {
-                setIsAiTriageOpen(false);
-                setAiTriagePrefill(null);
-              }}
-              soundEnabled={soundEnabled}
-              prefillQuery={aiTriagePrefill}
-            />
-            </Suspense>
-          </div>
-        </div>
-      )}
+      <AiTriageModal
+        isOpen={isAiTriageOpen}
+        onClose={() => {
+          setIsAiTriageOpen(false);
+          setAiTriagePrefill(null);
+        }}
+        soundEnabled={soundEnabled}
+        prefillQuery={aiTriagePrefill}
+      />
 
       {/* Floating Tactical AI Quick Trigger Button (When modal closed) */}
       {!isAiTriageOpen && (

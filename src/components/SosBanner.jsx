@@ -128,6 +128,14 @@ export default function SosBanner({
               <PhoneCall className="w-4 h-4 group-hover:scale-125 transition-transform" />
               <span>Call {REGION.emergencyNumbers.ambulance} Ambulance</span>
             </a>
+            <a
+              href={`tel:${REGION.emergencyNumbers.fire}`}
+              title={`Call ${REGION.emergencyNumbers.fire} — Fire Brigade Emergency`}
+              className="w-full sm:w-auto group px-4 py-2.5 rounded-xl font-bold tracking-wider text-xs uppercase transition-all duration-300 shadow-xl flex items-center justify-center gap-2 bg-orange-600/90 text-white hover:bg-orange-500 border border-orange-400/50 shadow-orange-950/60"
+            >
+              <Flame className="w-4 h-4 group-hover:scale-125 transition-transform" />
+              <span>Call {REGION.emergencyNumbers.fire} Fire</span>
+            </a>
             <button
               onClick={handleSosClick}
               className={`w-full sm:w-auto relative group overflow-hidden px-5 py-2.5 rounded-xl font-bold tracking-wider text-xs uppercase transition-all duration-300 shadow-xl flex items-center justify-center gap-2 ${
