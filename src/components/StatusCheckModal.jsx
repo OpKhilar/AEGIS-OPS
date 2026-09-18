@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { REGION } from '../config/region';
 import { 
   X, 
   ShieldCheck, 
@@ -43,7 +44,7 @@ export default function StatusCheckModal({
   // Default coordinate if none acquired
   useEffect(() => {
     if (isOpen && !coords) {
-      setCoords({ lat: 37.7795, lng: -122.4180, accuracy: '± 5m' });
+      setCoords({ lat: REGION.center[0], lng: REGION.center[1], accuracy: '± 5m' });
     }
     if (isOpen) {
       setSubmitted(false);
@@ -69,8 +70,8 @@ export default function StatusCheckModal({
           console.warn('Geolocation fallback used:', error);
           // Simulated high-precision tactical coordinate
           setCoords({
-            lat: 37.7780 + (Math.random() - 0.5) * 0.01,
-            lng: -122.4170 + (Math.random() - 0.5) * 0.01,
+            lat: REGION.center[0] + (Math.random() - 0.5) * 0.01,
+            lng: REGION.center[1] + (Math.random() - 0.5) * 0.01,
             accuracy: '± 4m (Simulated GPS)'
           });
           setIsLocating(false);
@@ -79,7 +80,7 @@ export default function StatusCheckModal({
         { timeout: 4000 }
       );
     } else {
-      setCoords({ lat: 37.7749, lng: -122.4194, accuracy: '± 5m (Simulated)' });
+      setCoords({ lat: REGION.center[0], lng: REGION.center[1], accuracy: '± 5m (Simulated)' });
       setIsLocating(false);
     }
   };
@@ -89,7 +90,7 @@ export default function StatusCheckModal({
     const finalReport = {
       id: `USR-${Math.floor(1000 + Math.random() * 9000)}`,
       status: triageStatus.toUpperCase(),
-      coordinates: [coords?.lat || 37.7749, coords?.lng || -122.4194],
+      coordinates: [coords?.lat || REGION.center[0], coords?.lng || REGION.center[1]],
       address: addressNote,
       headcount,
       medicalNotes,
@@ -308,8 +309,7 @@ export default function StatusCheckModal({
                 <span>MESH TELEMETRY PAYLOAD PREVIEW</span>
                 <span className="text-emerald-400">SHA-256 ENCRYPTED</span>
               </div>
-              <div className="text-slate-300 truncate">
-                {`{"node":"CITIZEN-TX","triage":"${triageStatus.toUpperCase()}","coords":[${coords?.lat || 37.77},${coords?.lng || -122.41}],"count":${headcount}}`}
+              <div className="text-slate-300 truncate">                  {`{"node":"CITIZEN-TX","triage":"${triageStatus.toUpperCase()}","coords":[${(coords?.lat || REGION.center[0]).toFixed(2)},${(coords?.lng || REGION.center[1]).toFixed(2)}],"count":${headcount}}`}
               </div>
             </div>
 

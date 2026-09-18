@@ -23,7 +23,7 @@ export const FIRST_AID_GUIDES = [
    - Check breathing for **no more than 10 seconds** (gasping / agonal breathing is NOT normal breathing).
 
 2. **Step 2: Call for Help & Get AED**
-   - Point to a specific bystander: *"You, call 911/112 and bring an AED immediately!"*
+   - Point to a specific bystander: *"You, call 112 and bring an AED immediately!"*
    - If alone with a phone, put it on speaker with emergency dispatch while starting CPR.
 
 3. **Step 3: Position Hands on Center of Chest**
@@ -50,7 +50,7 @@ export const FIRST_AID_GUIDES = [
 - **DO NOT** touch the patient while the AED is analyzing or administering a shock.
 
 ### 📞 EMERGENCY DISPATCH REMINDER
-Call **911 / 112** or hit the **AEGIS-OPS SOS Beacon** on your dashboard right now!`
+Call **112 (India's national emergency number)** or hit the **AEGIS-OPS SOS Beacon** on your dashboard right now!`
   },
   {
     id: 'severe-bleeding',
@@ -98,7 +98,7 @@ Call **911 / 112** or hit the **AEGIS-OPS SOS Beacon** on your dashboard right n
 - **DO NOT** let the patient stand up or walk.
 
 ### 📞 EMERGENCY DISPATCH REMINDER
-Inform 911 dispatch immediately that a **tourniquet is applied with the time recorded**.`
+Inform 112 dispatch immediately that a **tourniquet is applied with the time recorded**.`
   },
   {
     id: 'choking-heimlich',
@@ -134,7 +134,7 @@ Inform 911 dispatch immediately that a **tourniquet is applied with the time rec
 
 5. **Step 5: If the Victim Loses Consciousness**
    - Carefully ease them to the floor onto their back.
-   - Call 911 / activate speakerphone immediately.
+   - Call 112 / activate speakerphone immediately.
    - Begin **30 chest compressions**.
    - Before giving rescue breaths, open airway and look into the mouth. If you clearly see the object, sweep it out with a finger.
    - Attempt 2 rescue breaths. Repeat CPR cycle until breathing resumes or EMS arrives.
@@ -235,7 +235,7 @@ Seek immediate emergency medical care if the burn covers palms, joints, face, gr
 - **DO NOT** allow patient to bear weight or walk on an injured lower extremity.
 
 ### 📞 EMERGENCY DISPATCH REMINDER
-Call 911 immediately if bone is visible, extremity is cold/blue/pulseless, or spinal injury is suspected.`
+Call 112 immediately if bone is visible, extremity is cold/blue/pulseless, or spinal injury is suspected.`
   },
   {
     id: 'anaphylaxis-allergy',
@@ -261,7 +261,7 @@ Call 911 immediately if bone is visible, extremity is cold/blue/pulseless, or sp
    - Hold firmly in place for **3 full seconds** (or 10 seconds for older devices).
    - Remove pen and massage the injection site for 10 seconds.
 
-3. **Step 3: Call 911 / EMS Immediately**
+3. **Step 3: Call 112 / EMS Immediately**
    - State clearly: *"Patient in anaphylactic shock, epinephrine administered at [Time]."*
 
 4. **Step 4: Position Patient Correctly**
@@ -314,7 +314,7 @@ Biphasic reactions can trigger a second life-threatening episode up to 12 hours 
 - **DO NOT** hold them down or try to physically restrain convulsing limbs.
 - **DO NOT** offer water, food, or medication until fully alert and awake.
 
-### 📞 CALL 911 / EMS IMMEDIATELY IF:
+### 📞 CALL 112 / EMS IMMEDIATELY IF:
 - Seizure lasts **longer than 5 minutes**.
 - A second seizure starts without regaining consciousness.
 - Person is pregnant, diabetic, or injured during fall.
@@ -358,7 +358,7 @@ Biphasic reactions can trigger a second life-threatening episode up to 12 hours 
 - **DO NOT** give energy drinks, alcohol, or caffeine.
 
 ### 📞 EMERGENCY DISPATCH REMINDER
-Heat stroke is an acute medical emergency with high mortality if cooling is delayed. Call 911 instantly.`
+Heat stroke is an acute medical emergency with high mortality if cooling is delayed. Call 112 instantly.`
   },
   {
     id: 'hypothermia-frostbite',
@@ -442,7 +442,7 @@ In hypothermia, pulse may be extremely faint and slow (10-20 bpm). Check carotid
 - **DO NOT** give caffeine, alcohol, or pain medications.
 
 ### 📞 EMERGENCY DISPATCH REMINDER
-Call 911 / Poison Control immediately. Antivenom is the only definitive cure and must be given early in a hospital.`
+Call 112 / Poison Control immediately. Antivenom is the only definitive cure and must be given early in a hospital.`
   },
   {
     id: 'electric-shock',
@@ -558,14 +558,14 @@ Seek immediate emergency neurosurgical evaluation if any loss of consciousness o
    - Inhale slowly through nose for 2 counts.
    - Exhale gently through pursed lips (like blowing out birthday candles) for 4 counts to prevent airway collapse.
 
-### ⚠️ CRITICAL RED FLAGS (CALL 911 IMMEDIATELY)
+### ⚠️ CRITICAL RED FLAGS (CALL 112 IMMEDIATELY)
 - **Silent Chest**: Wheezing stops suddenly because air movement is too weak to create sound (sign of impending respiratory arrest).
 - Inability to speak more than 1 or 2 words between breaths.
 - Bluish tint (cyanosis) to lips, tongue, or fingernails.
 - Patient appears exhausted, confused, or drowsy.
 
 ### 📞 EMERGENCY DISPATCH REMINDER
-Dial 911 immediately if the reliever inhaler does not provide clear relief within 5 minutes.`
+Dial 112 immediately if the reliever inhaler does not provide clear relief within 5 minutes.`
   },
   {
     id: 'poisoning-overdose',

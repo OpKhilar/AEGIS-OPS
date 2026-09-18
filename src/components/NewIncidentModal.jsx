@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { REGION } from '../config/region';
 import { 
   X, 
   Flame, 
@@ -45,8 +46,8 @@ export default function NewIncidentModal({
       type,
       severity,
       location: [
-        37.7749 + (Math.random() - 0.5) * 0.03,
-        -122.4194 + (Math.random() - 0.5) * 0.03
+        REGION.center[0] + (Math.random() - 0.5) * 0.03,
+        REGION.center[1] + (Math.random() - 0.5) * 0.03
       ],
       address: address || 'Operational Sector Grid 4',
       reportedAt: 'Just now',
@@ -153,7 +154,7 @@ export default function NewIncidentModal({
               type="text"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              placeholder="e.g. 220 5th St, Corner of Folsom"
+              placeholder="e.g. Mirza Galib Marg, near Crawford Market"
               className="w-full bg-slate-950 text-slate-100 p-2.5 rounded-lg border border-slate-800 focus:outline-none focus:border-rose-500"
             />
           </div>

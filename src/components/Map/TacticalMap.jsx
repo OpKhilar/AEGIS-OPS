@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { REGION } from '../../config/region';
 import { 
   Layers, 
   MapPin, 
@@ -31,6 +32,7 @@ export default function TacticalMap({
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const tileLayerRef = useRef(null);
+  const labelLayerRef = useRef(null);
   const markersRef = useRef({});
   
   // Layer toggles
@@ -41,28 +43,33 @@ export default function TacticalMap({
   const [showVolunteers, setShowVolunteers] = useState(true);
   const [tileStyle, setTileStyle] = useState('dark'); // 'dark' | 'osm'
   const [severityFilter, setSeverityFilter] = useState('all');
-  const [cursorCoords, setCursorCoords] = useState({ lat: 37.7749, lng: -122.4194 });
+  const [cursorCoords, setCursorCoords] = useState({ lat: REGION.center[0], lng: REGION.center[1] });
 
   // Initialize Leaflet Map
   useEffect(() => {
     if (!mapContainerRef.current || mapInstanceRef.current) return;
 
     const map = L.map(mapContainerRef.current, {
-      center: [37.7749, -122.4194],
-      zoom: 13,
-      minZoom: 10,
-      maxZoom: 18,
+      center: REGION.center,
+      zoom: REGION.defaultZoom,
+      minZoom: REGION.minZoom,
+      maxZoom: REGION.maxZoom,
       zoomControl: false
     });
 
-    // Default CartoDB Dark Matter tile layer
-    const initialTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      subdomains: 'abcd',
-      maxZoom: 19
+    // Default Esri Dark Gray Canvas tiles (keyless; CARTO basemaps now require an API key)
+    const initialTiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+      maxZoom: 16
+    }).addTo(map);
+
+    const initialLabels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 16,
+      pane: 'shadowPane'
     }).addTo(map);
 
     tileLayerRef.current = initialTiles;
+    labelLayerRef.current = initialLabels;
 
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
@@ -87,6 +94,10 @@ export default function TacticalMap({
     if (!map || !tileLayerRef.current) return;
 
     map.removeLayer(tileLayerRef.current);
+    if (labelLayerRef.current) {
+      map.removeLayer(labelLayerRef.current);
+      labelLayerRef.current = null;
+    }
 
     if (tileStyle === 'osm') {
       tileLayerRef.current = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -94,10 +105,13 @@ export default function TacticalMap({
         maxZoom: 19
       }).addTo(map);
     } else {
-      tileLayerRef.current = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://carto.com/">CARTO</a> OpenStreetMap',
-        subdomains: 'abcd',
-        maxZoom: 19
+      tileLayerRef.current = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+        maxZoom: 16
+      }).addTo(map);
+      labelLayerRef.current = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 16,
+        pane: 'shadowPane'
       }).addTo(map);
     }
   }, [tileStyle]);
@@ -386,7 +400,7 @@ export default function TacticalMap({
 
   const handleResetCenter = () => {
     if (mapInstanceRef.current) {
-      mapInstanceRef.current.flyTo([37.7749, -122.4194], 13, { duration: 1 });
+      mapInstanceRef.current.flyTo(REGION.center, REGION.defaultZoom, { duration: 1 });
     }
   };
 
@@ -468,7 +482,7 @@ export default function TacticalMap({
           {/* Map Tile Style Switch (Dark Matter vs OpenStreetMap Standard) */}
           <button
             onClick={() => setTileStyle(tileStyle === 'dark' ? 'osm' : 'dark')}
-            title={`Switch to ${tileStyle === 'dark' ? 'OpenStreetMap Standard' : 'CartoDB Dark Matter'} view`}
+            title={`Switch to ${tileStyle === 'dark' ? 'OpenStreetMap Standard' : 'Esri Dark Gray Canvas'} view`}
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-900/90 text-slate-300 border border-slate-700 hover:text-white text-xs font-mono transition-all shadow-lg"
           >
             <Globe className="w-3.5 h-3.5 text-sky-400" />
@@ -497,7 +511,7 @@ export default function TacticalMap({
           </div>
           <span className="w-px h-3 bg-slate-800"></span>
           <span className="text-slate-500 hidden sm:inline">
-            {tileStyle === 'dark' ? 'CARTODB DARK TILES' : 'OPENSTREETMAP TILE LAYER'} • WGS84
+            {tileStyle === 'dark' ? 'ESRI DARK GRAY TILES' : 'OPENSTREETMAP TILE LAYER'} • WGS84
           </span>
         </div>
       </div>

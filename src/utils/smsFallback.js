@@ -1,13 +1,15 @@
 /**
  * Emergency Cellular SMS Fallback Utility for AegisOps SOS Dispatch.
  * If navigator.onLine is false or network requests time out, this utility generates
- * an encoded SMS URI (sms:+1234567890?body=LAT,LONG,STATUS) and automatically opens
+ * an encoded SMS URI (sms:+91112?body=LAT,LONG,STATUS) and automatically opens
  * the user's native device messaging app to dispatch the distress alert via cellular SMS.
  */
 
+import { REGION } from '../config/region';
+
 export const DEFAULT_EMERGENCY_SMS_NUMBER = typeof import.meta !== 'undefined' && import.meta.env?.VITE_EMERGENCY_SMS_NUMBER
   ? import.meta.env.VITE_EMERGENCY_SMS_NUMBER
-  : '+1234567890';
+  : REGION.smsFallbackNumber;
 
 export const DEFAULT_SOS_TIMEOUT_MS = 4000;
 
@@ -23,8 +25,8 @@ export const DEFAULT_SOS_TIMEOUT_MS = 4000;
  * @returns {string} Encoded SMS URI
  */
 export function buildEmergencySmsUri({
-  lat = 37.7749,
-  lng = -122.4194,
+  lat = REGION.center[0],
+  lng = REGION.center[1],
   status = 'CRITICAL',
   phoneNumber = DEFAULT_EMERGENCY_SMS_NUMBER
 }) {
@@ -75,8 +77,8 @@ export function openDeviceMessagingApp(smsUri) {
  * Encodes body and opens native device messenger.
  */
 export function triggerSmsFallback({
-  lat = 37.7749,
-  lng = -122.4194,
+  lat = REGION.center[0],
+  lng = REGION.center[1],
   status = 'CRITICAL',
   phoneNumber = DEFAULT_EMERGENCY_SMS_NUMBER
 }) {
@@ -116,8 +118,8 @@ export async function executeSosWithSmsFallback({
   timeoutMs = DEFAULT_SOS_TIMEOUT_MS,
   onSmsTriggered = null
 }) {
-  const lat = payload.coordinates?.[0] ?? payload.lat ?? 37.7749;
-  const lng = payload.coordinates?.[1] ?? payload.long ?? payload.lng ?? -122.4194;
+  const lat = payload.coordinates?.[0] ?? payload.lat ?? REGION.center[0];
+  const lng = payload.coordinates?.[1] ?? payload.long ?? payload.lng ?? REGION.center[1];
   const status = payload.status || 'CRITICAL';
 
   const triggerAndNotify = (reason) => {

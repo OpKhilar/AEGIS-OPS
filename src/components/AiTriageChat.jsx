@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { REGION } from '../config/region';
 import { 
   HeartPulse, 
   Sparkles, 
@@ -597,7 +598,7 @@ export default function AiTriageChat({
           </div>
 
           <div className="hidden sm:block text-slate-500">
-            Press [Enter] to submit • Emergency? Call 911 immediately
+            Press [Enter] to submit • Emergency? Call {REGION.emergencyNumbers.unified} immediately
           </div>
         </div>
       </form>

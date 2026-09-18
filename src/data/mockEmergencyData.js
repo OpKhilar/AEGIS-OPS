@@ -1,16 +1,24 @@
+import { REGION } from '../config/region';
+
+/**
+ * Demo/seed dataset — Mumbai, India.
+ * All coordinates, names, contacts and places are India-based.
+ * Consumed by services/emergencyService.js as the offline/fallback layer.
+ */
+
 export const INITIAL_INCIDENTS = [
   {
     id: 'INC-8092',
     title: '4-Alarm Commercial Structure Fire',
     type: 'fire',
     severity: 'critical',
-    location: [37.7833, -122.4167],
-    address: '450 Mission St, Financial District',
+    location: [18.9500, 72.8350],
+    address: 'Nariman Point Business District',
     reportedAt: '12 mins ago',
     timestamp: Date.now() - 12 * 60 * 1000,
     status: 'active',
     casualties: '3 Injured / Evacuating Floors 4-7',
-    description: 'Heavy black smoke billowing from upper floors. Fire crews conducting interior suppression and roof ventilation.',
+    description: 'Heavy black smoke billowing from upper floors. Mumbai Fire Brigade conducting interior suppression and roof ventilation.',
     assignedResponders: ['ENG-14', 'RESCUE-9'],
     radius: 400
   },
@@ -19,13 +27,13 @@ export const INITIAL_INCIDENTS = [
     title: 'Flash Flood & Submerged Vehicles',
     type: 'flood',
     severity: 'critical',
-    location: [37.7680, -122.4280],
-    address: 'Mission St & 16th St Incline Underpass',
+    location: [18.9680, 72.8280],
+    address: 'Hindmata Junction Underpass, Parel',
     reportedAt: '24 mins ago',
     timestamp: Date.now() - 24 * 60 * 1000,
     status: 'active',
     casualties: '2 Trapped in SUV / Water Rising 4ft',
-    description: 'Storm surge drain backup causing rapid inundation. Water rescue zodiac deployment requested.',
+    description: 'Monsoon drain backup causing rapid inundation. Water rescue boat deployment requested.',
     assignedResponders: ['BOAT-01'],
     radius: 500
   },
@@ -34,13 +42,13 @@ export const INITIAL_INCIDENTS = [
     title: 'Ammonia Tanker Vapor Leak',
     type: 'hazmat',
     severity: 'warning',
-    location: [37.7550, -122.3920],
-    address: 'Pier 80 Industrial Terminal',
+    location: [18.9350, 72.8420],
+    address: 'Wadala Truck Terminal',
     reportedAt: '38 mins ago',
     timestamp: Date.now() - 38 * 60 * 1000,
     status: 'active',
     casualties: '0 Reported / 800m Exclusion Perimeter',
-    description: 'Slow vapor plume drifting northeast toward bay waters. Hazmat perimeter established with air sampling drones.',
+    description: 'Slow vapor plume drifting northeast toward the harbour. Hazmat perimeter established with air sampling drones.',
     assignedResponders: ['HAZMAT-7'],
     radius: 650
   },
@@ -49,13 +57,13 @@ export const INITIAL_INCIDENTS = [
     title: 'Multi-Vehicle Pileup w/ Mass Trauma',
     type: 'medical',
     severity: 'critical',
-    location: [37.7950, -122.3980],
-    address: 'Embarcadero Southbound Ramp',
+    location: [18.9250, 72.8330],
+    address: 'Eastern Express Highway Slip Road',
     reportedAt: '45 mins ago',
     timestamp: Date.now() - 45 * 60 * 1000,
     status: 'active',
     casualties: '6 Critical / Triage Tag Red: 2, Yellow: 4',
-    description: 'Highway pileup involving municipal bus. Medevac LZ cleared at adjacent surface lot.',
+    description: 'Highway pileup involving a BEST bus. Medevac LZ cleared at adjacent service lane.',
     assignedResponders: ['MEDEVAC-2', 'AMB-10'],
     radius: 350
   }
@@ -65,63 +73,63 @@ export const INITIAL_RESOURCES = [
   // 1. Emergency Shelters
   {
     id: 'RES-SHL-01',
-    name: 'Civic Center Emergency Shelter',
+    name: 'Azad Maidan Emergency Shelter',
     type: 'shelter',
-    location: [37.7795, -122.4178],
-    address: '99 Grove St, Civic Center',
+    location: [18.9450, 72.8380],
+    address: 'Azad Maidan, Dhobi Talao',
     capacityCurrent: 384,
     capacityMax: 500,
-    contact: '+1 (555) 911-3001',
+    contact: '+91 22 2262 5001',
     services: ['Emergency Cots', 'Hot Food Service', 'Backup Generator', 'Pet Kennels'],
     status: 'OPEN'
   },
   {
     id: 'RES-SHL-02',
-    name: 'Lincoln Park Fieldhouse Refuge',
+    name: 'Shivaji Park Community Refuge',
     type: 'shelter',
-    location: [37.7850, -122.4350],
-    address: '300 34th Ave, Outer Richmond',
+    location: [18.9800, 72.8380],
+    address: 'Shivaji Park, Dadar West',
     capacityCurrent: 142,
     capacityMax: 350,
-    contact: '+1 (555) 911-3002',
+    contact: '+91 22 2445 2002',
     services: ['Cots & Blankets', 'Potable Water Tank', 'Satellite Wi-Fi', 'Infant Care'],
     status: 'OPEN'
   },
   {
     id: 'RES-SHL-03',
-    name: 'Mission Cultural Evac Station',
+    name: 'Parel Mills Evac Station',
     type: 'shelter',
-    location: [37.7600, -122.4190],
-    address: '2868 Mission St, Mission District',
+    location: [18.9700, 72.8400],
+    address: 'Kamala Mills Compound, Lower Parel',
     capacityCurrent: 290,
     capacityMax: 300,
-    contact: '+1 (555) 911-3003',
-    services: ['Warm Clothing', 'Hygiene Kits', 'Bilingual Support'],
+    contact: '+91 22 2490 8003',
+    services: ['Warm Clothing', 'Hygiene Kits', 'Marathi-Hindi Support'],
     status: 'NEAR_CAPACITY'
   },
 
   // 2. Medical Centers & Urgent Triage
   {
     id: 'RES-MED-01',
-    name: 'Zuckerberg Trauma & Emergency Hospital',
+    name: 'KEM Hospital Trauma & Emergency Hub',
     type: 'medical_center',
-    location: [37.7555, -122.4055],
-    address: '1001 Potrero Ave, Potrero Hill',
+    location: [18.9920, 72.8460],
+    address: 'Acharya Donde Marg, Parel',
     capacityCurrent: 42,
     capacityMax: 60,
-    contact: '+1 (555) 206-8000 (EMS Desk)',
+    contact: '+91 22 2410 7000 (EMS Desk)',
     services: ['Level 1 Trauma Unit', 'Burn Care ICU', 'Helipad LZ', 'Blood Bank'],
     status: 'OPEN'
   },
   {
     id: 'RES-MED-02',
-    name: 'UCSF Emergency Clinical Triage Hub',
+    name: 'Sion Hospital Emergency Triage Wing',
     type: 'medical_center',
-    location: [37.7631, -122.4580],
-    address: '505 Parnassus Ave, Inner Sunset',
+    location: [19.0400, 72.8650],
+    address: 'Sion West',
     capacityCurrent: 18,
     capacityMax: 35,
-    contact: '+1 (555) 476-1000',
+    contact: '+91 22 2407 5000',
     services: ['Rapid Decontamination', 'Toxicology Screening', 'Pediatric Trauma'],
     status: 'OPEN'
   },
@@ -129,26 +137,26 @@ export const INITIAL_RESOURCES = [
   // 3. Volunteer Contact & Staging Hubs
   {
     id: 'RES-VOL-01',
-    name: 'SoMa Volunteer Relief & Staging Depot',
+    name: 'Parel Volunteer Relief & Staging Depot',
     type: 'volunteer_hub',
-    location: [37.7770, -122.4040],
-    address: '550 Brannan St, SoMa',
+    location: [18.9770, 72.8440],
+    address: 'Ganpatrao Kadam Marg, Dadar East',
     capacityCurrent: 85,
     capacityMax: 150,
-    contact: 'Volunteer Coord. Capt. Diaz: +1 (555) 839-4401 (V-NET 14)',
+    contact: 'Volunteer Coord. Capt. Deshmukh: +91 98200 44001 (V-NET 14)',
     services: ['Sandbag Distribution', 'First Aid Volunteers', 'Food Delivery Vans', 'HAM Radio'],
     status: 'OPEN'
   },
   {
     id: 'RES-VOL-02',
-    name: 'Mission District Community Volunteer Base',
+    name: 'Dadar Community Volunteer Base',
     type: 'volunteer_hub',
-    location: [37.7590, -122.4180],
-    address: '2868 Mission St, Mission District',
+    location: [18.9790, 72.8420],
+    address: 'Ranade Road, Dadar West',
     capacityCurrent: 40,
     capacityMax: 80,
-    contact: 'Coordinator Sarah Vance: +1 (555) 839-4402',
-    services: ['Bilingual Translators', 'Elderly Escort Teams', 'Mobile Device Charging'],
+    contact: 'Coordinator Priya Joshi: +91 98200 44002',
+    services: ['Marathi Translators', 'Elderly Escort Teams', 'Mobile Device Charging'],
     status: 'OPEN'
   }
 ];
@@ -156,14 +164,14 @@ export const INITIAL_RESOURCES = [
 export const INITIAL_RESPONDERS = [
   {
     id: 'ENG-14',
-    name: 'Engine 14 "Centurion"',
+    name: 'Fire Engine 14 "Vayu"',
     unitType: 'Fire & Rescue',
     status: 'ON SCENE',
-    location: [37.7840, -122.4155],
+    location: [18.9490, 72.8355],
     assignedIncidentId: 'INC-8092',
-    radioChannel: 'TAC-FIRE 4 (154.28 MHz)',
+    radioChannel: 'MFB-TAC 4 (154.28 MHz)',
     crewCount: 5,
-    leadOfficer: 'Capt. Marcus Vance',
+    leadOfficer: 'Capt. Vikram Rane',
     fuelBattery: '88%',
     equipment: ['1500 GPM Pump', 'Thermal Camera', 'Forcible Entry Kit']
   },
@@ -172,11 +180,11 @@ export const INITIAL_RESPONDERS = [
     name: 'Air Ambulance Sky-2',
     unitType: 'Critical Care Flight',
     status: 'EN ROUTE',
-    location: [37.7980, -122.3910],
+    location: [18.9080, 72.8410],
     assignedIncidentId: 'INC-8096',
     radioChannel: 'MED-AIR 1 (123.05 MHz)',
     crewCount: 3,
-    leadOfficer: 'Dr. Elena Rossi, Flight Surg.',
+    leadOfficer: 'Dr. Anjali Deshpande, Flight Surg.',
     fuelBattery: '65%',
     equipment: ['Blood Bank Cooler', 'Dual Ventilators', 'Ultrasonic Triage']
   },
@@ -185,24 +193,24 @@ export const INITIAL_RESPONDERS = [
     name: 'HazMat Heavy 7',
     unitType: 'CBRN Containment',
     status: 'ON SCENE',
-    location: [37.7540, -122.3940],
+    location: [18.9355, 72.8430],
     assignedIncidentId: 'INC-8095',
     radioChannel: 'HAZ-OPS 9 (460.12 MHz)',
     crewCount: 6,
-    leadOfficer: 'Chief Specialist Thorne',
+    leadOfficer: 'Chief Specialist Kulkarni',
     fuelBattery: '92%',
     equipment: ['Level A Encapsulated Suits', 'Gas Spectrometer', 'Decon Basin']
   },
   {
     id: 'BOAT-01',
-    name: 'Swiftwater Rescue Zodiac 1',
+    name: 'Swiftwater Rescue Boat 1',
     unitType: 'Marine & Flood Ops',
     status: 'EN ROUTE',
-    location: [37.7660, -122.4250],
+    location: [18.9660, 72.8290],
     assignedIncidentId: 'INC-8094',
     radioChannel: 'WATER-TAC 2 (156.80 MHz)',
     crewCount: 4,
-    leadOfficer: 'Lt. Jason Chen',
+    leadOfficer: 'Lt. Sameer Pawar',
     fuelBattery: '78%',
     equipment: ['Rigid Inflatable', 'Drysuits', 'High-Angle Rope System']
   },
@@ -211,11 +219,11 @@ export const INITIAL_RESPONDERS = [
     name: 'Heavy Rescue Squad 9',
     unitType: 'Structural Search',
     status: 'ON SCENE',
-    location: [37.7825, -122.4175],
+    location: [18.9505, 72.8345],
     assignedIncidentId: 'INC-8092',
-    radioChannel: 'TAC-FIRE 4 (154.28 MHz)',
+    radioChannel: 'MFB-TAC 4 (154.28 MHz)',
     crewCount: 4,
-    leadOfficer: 'Sgt. Rachel Adams',
+    leadOfficer: 'Sgt. Meera Iyer',
     fuelBattery: '81%',
     equipment: ['Acoustic Search Sensors', 'Hydraulic Spreaders', 'Air Shoring']
   }
@@ -225,11 +233,11 @@ export const INITIAL_USER_STATUSES = [
   {
     id: 'USR-8821',
     status: 'SAFE',
-    location: 'Civic Center North Plaza',
-    coordinates: [37.7798, -122.4185],
+    location: 'Azad Maidan North Plaza',
+    coordinates: [18.9455, 72.8385],
     statusMessage: 'Group sheltered safely on ground floor. Have water and power.',
     headcount: 3,
-    phone: '+1 (555) 302-1199',
+    phone: '+91 98200 31199',
     timestamp: Date.now() - 15 * 60 * 1000
   }
 ];
@@ -238,9 +246,9 @@ export const INITIAL_ALERTS = [
   {
     id: 'ALT-1001',
     severity: 'critical',
-    source: 'EAS BROADCAST',
-    title: 'EVACUATION ORDER: Blocks 400-500 Mission St',
-    message: 'Mandatory structural evacuation due to 4-alarm fire. Avoid Financial District transit corridors.',
+    source: 'NDMA BROADCAST',
+    title: 'EVACUATION ORDER: Nariman Point Blocks 4-5',
+    message: 'Mandatory structural evacuation due to 4-alarm fire. Avoid Fort business district transit corridors.',
     timestamp: 'Just now',
     time: Date.now() - 30 * 1000,
     zone: 'Sector 4-B'
@@ -249,38 +257,40 @@ export const INITIAL_ALERTS = [
     id: 'ALT-1002',
     severity: 'critical',
     source: 'EMS FLIGHT DESK',
-    title: 'Medevac Sky-2 En Route to Embarcadero LZ',
-    message: 'Landing zone secured at lot 14. Keep emergency lanes clear for 4 incoming paramedic rigs.',
+    title: 'Medevac Sky-2 En Route to Eastern Highway LZ',
+    message: 'Landing zone secured at service lane 14. Keep emergency lanes clear for 4 incoming paramedic rigs.',
     timestamp: '4m ago',
     time: Date.now() - 4 * 60 * 1000,
-    zone: 'Downtown Waterfront'
+    zone: 'Wadala Corridor'
   },
   {
     id: 'ALT-1003',
     severity: 'warning',
     source: 'HAZMAT COMMAND',
-    title: 'Vapor Containment Buffer: Pier 80 Terminal',
-    message: 'Shelter in place for residents within 500 meters downwind of Pier 80. Close all HVAC intakes.',
+    title: 'Vapor Containment Buffer: Wadala Truck Terminal',
+    message: 'Shelter in place for residents within 500 meters downwind of Wadala. Close all HVAC intakes.',
     timestamp: '14m ago',
     time: Date.now() - 14 * 60 * 1000,
-    zone: 'Industrial Bay'
+    zone: 'Wadala East'
   },
   {
     id: 'ALT-1004',
     severity: 'warning',
     source: 'HYDROLOGY SENSOR',
-    title: 'Rapid Water Rise: Mission & 16th St Incline',
+    title: 'Rapid Water Rise: Hindmata Junction Underpass',
     message: 'Flash flooding has reached 4.2 feet. Swiftwater boat unit 01 deployed for vehicle rescues.',
     timestamp: '22m ago',
     time: Date.now() - 22 * 60 * 1000,
-    zone: 'Mission Corridor'
+    zone: 'Parel Corridor'
   }
 ];
 
 export const BROADCAST_TICKERS = [
-  '🚨 CRITICAL: 4-Alarm Fire at 450 Mission St - Avoid Sector 4-B',
-  '🌊 FLASH FLOOD WARNING: Mission & 16th St underpass impassable',
-  '⚠️ HAZMAT ADVISORY: Pier 80 Vapor Perimeter in effect - Close windows',
-  '🚁 MEDEVAC ACTIVE: Embarcadero Highway corridor reserved for air triage',
-  '🛡️ SHELTER UPDATE: Civic Center & Lincoln Park open with medical staff'
+  `🚨 CRITICAL: 4-Alarm Fire at Nariman Point - Avoid Sector 4-B`,
+  `🌊 FLASH FLOOD WARNING: Hindmata underpass impassable`,
+  '⚠️ HAZMAT ADVISORY: Wadala Vapor Perimeter in effect - Close windows',
+  '🚁 MEDEVAC ACTIVE: Eastern Express Highway corridor reserved for air triage',
+  '🛡️ SHELTER UPDATE: Azad Maidan & Shivaji Park open with medical staff'
 ];
+
+export { REGION };

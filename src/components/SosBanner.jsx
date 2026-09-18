@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { REGION } from '../config/region';
 import { 
   AlertOctagon, 
   Siren, 
@@ -8,7 +9,8 @@ import {
   ChevronRight, 
   CheckCircle2, 
   AlertTriangle,
-  Send
+  Send,
+  PhoneCall
 } from 'lucide-react';
 import { playAlertSound } from '../utils/audio';
 
@@ -59,7 +61,7 @@ export default function SosBanner({
           onTriggerSos({
             type: 'CITIZEN_SOS',
             timestamp: Date.now(),
-            coordinates: [37.7749, -122.4194]
+            coordinates: REGION.center
           });
         }
       }
@@ -116,8 +118,16 @@ export default function SosBanner({
             </div>
           </div>
 
-          {/* SOS Trigger Button */}
-          <div className="w-full sm:w-auto flex items-center justify-end">
+          {/* SOS Trigger Button + Emergency Call */}
+          <div className="w-full sm:w-auto flex items-center justify-end gap-2">
+            <a
+              href={`tel:${REGION.emergencyNumbers.ambulance}`}
+              title={`Call ${REGION.emergencyNumbers.ambulance} — Ambulance & Medical Emergency`}
+              className="w-full sm:w-auto group px-4 py-2.5 rounded-xl font-bold tracking-wider text-xs uppercase transition-all duration-300 shadow-xl flex items-center justify-center gap-2 bg-emerald-600/90 text-white hover:bg-emerald-500 border border-emerald-400/50 shadow-emerald-950/60"
+            >
+              <PhoneCall className="w-4 h-4 group-hover:scale-125 transition-transform" />
+              <span>Call {REGION.emergencyNumbers.ambulance} Ambulance</span>
+            </a>
             <button
               onClick={handleSosClick}
               className={`w-full sm:w-auto relative group overflow-hidden px-5 py-2.5 rounded-xl font-bold tracking-wider text-xs uppercase transition-all duration-300 shadow-xl flex items-center justify-center gap-2 ${

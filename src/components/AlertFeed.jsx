@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { REGION } from '../config/region';
 import { 
   Bell, 
   AlertOctagon, 
@@ -33,30 +34,30 @@ export default function AlertFeed({
     {
       severity: 'critical',
       source: 'RAPID TRIAGE SQUAD',
-      title: 'Structural Shoring Failure: 3rd St Loft',
+      title: 'Structural Shoring Failure: Kalbadevi Chawl Block',
       message: 'Creaking detected in north masonry wall. Secondary collapse danger. Pulling crews out of sector 2.',
-      zone: 'SoMa District'
+      zone: 'Kalbadevi Ward'
     },
     {
       severity: 'warning',
-      source: 'COAST GUARD AIR STATION',
+      source: 'COAST GUARD MUMBAI',
       title: 'High Tide Storm Surge Advisory',
       message: 'Low-lying shoreline roadways will experience 1.5ft coastal overwash within the next 45 minutes.',
-      zone: 'Bayfront Basin'
+      zone: 'Marine Drive Front'
     },
     {
       severity: 'advisory',
       source: 'CIVIC POWER DISPATCH',
-      title: 'Mobile Microgrid Deployed to St. Luke Clinic',
+      title: 'Mobile Microgrid Deployed to Bhatia Hospital',
       message: 'Mobile trailer generator operational. Critical ICU telemetry powered independently of grid failure.',
-      zone: 'Mission Corridor'
+      zone: 'Tardeo Corridor'
     },
     {
       severity: 'critical',
       source: 'HAZMAT SENSOR DRONE',
-      title: 'Chlorine Gas Sensor Spike at Water Plant',
+      title: 'Chlorine Gas Sensor Spike at Bhandup Water Plant',
       message: 'Continuous alarm at 12 ppm. Automatic isolation valve triggered. Decontamination team on standby.',
-      zone: 'Southeast Industrial'
+      zone: 'Eastern Suburbs'
     }
   ];
 

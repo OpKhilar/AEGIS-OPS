@@ -40,7 +40,7 @@ Bullet list of dangerous common mistakes to avoid:
 - **DO NOT** apply ice or butter to burns.
 
 ### 📞 EMERGENCY DISPATCH REMINDER
-Remind the user to dial 911 / 112 or activate the **AEGIS-OPS SOS Beacon** on this dashboard immediately.
+Remind the user to dial 112 (India's national emergency number) or activate the **AEGIS-OPS SOS Beacon** on this dashboard immediately.
 
 TONE & STYLE:
 - Calm, direct, authoritative, and compassionate.
