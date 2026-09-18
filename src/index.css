@@ -1,26 +1,98 @@
 @import "tailwindcss";
 
+/* Class-based dark variant — toggled on <html> by useTheme */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Semantic theme tokens (single source of truth for both modes).
+ * Light = "Day Ops", dark = "Night Ops" (the original palette).
+ * Flipped via the .dark class on <html>; consumed as Tailwind utilities
+ * (bg-app, bg-surface, text-ink, border-line, ...) through @theme inline.
+ */
+@theme inline {
+  --color-app: var(--app-bg);          /* page background */
+  --color-app-2: var(--app-bg-2);      /* recessed background */
+  --color-surface: var(--surface);     /* card surface */
+  --color-elevated: var(--elevated);   /* modal / raised surface */
+  --color-line: var(--line);           /* subtle border */
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);             /* primary text */
+  --color-ink-2: var(--ink-2);         /* secondary text */
+  --color-ink-3: var(--ink-3);         /* muted text */
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-line: var(--accent-line);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+}
+
+:root {
+  /* Day Ops (light) */
+  --app-bg: #f1f5f9;      /* slate-100 */
+  --app-bg-2: #e2e8f0;    /* slate-200 */
+  --surface: #ffffff;
+  --elevated: #ffffff;
+  --line: #cbd5e1;        /* slate-300 */
+  --line-strong: #94a3b8; /* slate-400 */
+  --ink: #0f172a;         /* slate-900 */
+  --ink-2: #334155;       /* slate-700 */
+  --ink-3: #64748b;       /* slate-500 */
+  --accent: #e11d48;      /* rose-600 */
+  --accent-soft: rgba(225, 29, 72, 0.08);
+  --accent-line: rgba(225, 29, 72, 0.35);
+  --ok: #059669;          /* emerald-600 */
+  --warn: #d97706;        /* amber-600 */
+  --danger: #dc2626;      /* red-600 */
+  --info: #0284c7;        /* sky-600 */
+}
+
+.dark {
+  /* Night Ops (dark) — original command-center palette */
+  --app-bg: #020617;      /* slate-950 */
+  --app-bg-2: #0f172a;    /* slate-900 */
+  --surface: rgba(15, 23, 42, 0.8);
+  --elevated: #0f172a;
+  --line: #1e293b;        /* slate-800 */
+  --line-strong: #334155; /* slate-700 */
+  --ink: #f1f5f9;         /* slate-100 */
+  --ink-2: #cbd5e1;       /* slate-300 */
+  --ink-3: #94a3b8;       /* slate-400 */
+  --accent: #f43f5e;      /* rose-500 */
+  --accent-soft: rgba(244, 63, 94, 0.1);
+  --accent-line: rgba(244, 63, 94, 0.4);
+  --ok: #34d399;          /* emerald-400 */
+  --warn: #fbbf24;        /* amber-400 */
+  --danger: #f87171;      /* red-400 */
+  --info: #38bdf8;        /* sky-400 */
+}
+
 @layer base {
+  html { color-scheme: light; }
+  html.dark { color-scheme: dark; }
+
   body {
-    @apply bg-slate-950 text-slate-100 antialiased selection:bg-rose-500 selection:text-white;
+    @apply bg-app text-ink antialiased selection:bg-rose-500 selection:text-white;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    transition: background-color 200ms ease, color 200ms ease;
   }
 }
 
-/* Custom scrollbar for dark command feed */
+/* Scrollbar follows the active theme */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--app-bg-2);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(71, 85, 105, 0.5);
+  background: var(--line-strong);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 116, 139, 0.8);
+  background: var(--ink-3);
 }
 
 /* Pulse radar sweep animations */
@@ -54,38 +126,49 @@
 
 /* Glassmorphism tactical card */
 .tactical-glass {
-  background: rgba(15, 23, 42, 0.75);
+  background: var(--surface);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(51, 65, 85, 0.5);
+  border: 1px solid var(--line);
 }
 
 .tactical-glass-card {
-  background: rgba(15, 23, 42, 0.65);
+  background: var(--surface);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(51, 65, 85, 0.4);
+  border: 1px solid var(--line);
 }
 
-/* Leaflet dark theme map tweaks */
+/* Leaflet chrome follows the active theme */
 .leaflet-container {
-  background: #090d16 !important;
+  background: var(--app-bg-2) !important;
   font-family: inherit;
 }
 
+.leaflet-bar a {
+  background: var(--elevated) !important;
+  color: var(--ink-2) !important;
+  border-color: var(--line) !important;
+}
+
+.leaflet-bar a:hover {
+  background: var(--app-bg-2) !important;
+}
+
 .leaflet-popup-content-wrapper {
-  background: rgba(15, 23, 42, 0.95) !important;
-  color: #f8fafc !important;
-  border: 1px solid rgba(51, 65, 85, 0.8) !important;
+  background: var(--elevated) !important;
+  color: var(--ink) !important;
+  border: 1px solid var(--line) !important;
   border-radius: 0.75rem !important;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.7) !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.35) !important;
 }
 
 .leaflet-popup-tip {
-  background: rgba(15, 23, 42, 0.95) !important;
+  background: var(--elevated) !important;
+  border: 1px solid var(--line) !important;
 }
 
 .leaflet-container a.leaflet-popup-close-button {
-  color: #94a3b8 !important;
+  color: var(--ink-3) !important;
   padding: 8px !important;
 }
