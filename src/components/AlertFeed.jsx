@@ -274,7 +274,7 @@ export default function AlertFeed({
                           e.stopPropagation();
                           onAskAiTriage(alert);
                         }}
-                        title="Consult AEGIS-MEDIC for emergency triage instructions"
+                        title="Consult ResQ-MEDIC for emergency triage instructions"
                         className="px-2 py-0.5 rounded bg-rose-500/10 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 flex items-center gap-1 transition-all"
                       >
                         <HeartPulse className="w-2.5 h-2.5 text-rose-400 animate-pulse" />

@@ -1,5 +1,5 @@
 -- ============================================================================
--- AEGIS-OPS Trust Layer (idempotent — safe to re-run)
+-- ResQBharat Trust Layer (idempotent — safe to re-run)
 -- counters: fake incident logs, spam check-ins, spoofed GPS, flood attacks
 --
 -- Setup steps for the operator:

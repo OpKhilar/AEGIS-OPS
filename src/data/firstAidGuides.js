@@ -50,7 +50,7 @@ export const FIRST_AID_GUIDES = [
 - **DO NOT** touch the patient while the AED is analyzing or administering a shock.
 
 ### 📞 EMERGENCY DISPATCH REMINDER
-Call **112 (India's national emergency number)** or hit the **AEGIS-OPS SOS Beacon** on your dashboard right now!`
+Call **112 (India's national emergency number)** or hit the **ResQBharat SOS Beacon** on your dashboard right now!`
   },
   {
     id: 'severe-bleeding',

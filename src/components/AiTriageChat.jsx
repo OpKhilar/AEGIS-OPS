@@ -29,7 +29,7 @@ const INITIAL_MESSAGES = [
     role: 'assistant',
     source: 'system-init',
     timestamp: 'Command Live',
-    content: `### 🚨 AEGIS-MEDIC TRIAGE ASSISTANT ONLINE
+    content: `### 🚨 ResQ-MEDIC TRIAGE ASSISTANT ONLINE
 **Tactical First-Aid & Emergency Medical Guidance Protocol v2.5**
 
 I am ready to provide immediate, step-by-step triage guidance. State the emergency condition or tap a priority button below:
@@ -269,7 +269,7 @@ export default function AiTriageChat({
           <div>
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold font-mono tracking-wider text-ink">
-                AEGIS<span className="text-rose-500">-MEDIC</span>
+                ResQ<span className="text-rose-500">-MEDIC</span>
               </span>
               <span className="px-1.5 py-0.2 rounded text-[9px] font-mono bg-rose-500/20 text-rose-600 dark:text-rose-300 border border-rose-500/30">
                 TRIAGE AI
@@ -432,7 +432,7 @@ export default function AiTriageChat({
                   <>
                     <span className="text-cyan-400 font-bold flex items-center gap-1">
                       <ShieldAlert className="w-3 h-3 text-rose-500" />
-                      <span>AEGIS-MEDIC</span>
+                      <span>ResQ-MEDIC</span>
                     </span>
 
                     {msg.source === 'local-protocol' || msg.isFallback ? (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const STORAGE_KEY = 'aegis-theme';
+const STORAGE_KEY = 'resqbharat-theme';
 
 /** Mirrors the inline bootstrap in index.html so first paint and state agree. */
 function getInitialTheme() {

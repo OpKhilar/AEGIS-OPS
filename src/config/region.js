@@ -2,7 +2,7 @@
  * Region configuration — single source of truth for localization.
  * The UI reads everything geographic/administrative from here:
  * map center, emergency numbers, region labels, fallback contacts.
- * Swap this object to deploy AEGIS-OPS for a different region.
+ * Swap this object to deploy ResQBharat for a different region.
  */
 export const REGION = {
   id: 'in-mumbai',

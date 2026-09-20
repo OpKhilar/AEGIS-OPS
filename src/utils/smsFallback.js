@@ -1,5 +1,5 @@
 /**
- * Emergency Cellular SMS Fallback Utility for AegisOps SOS Dispatch.
+ * Emergency Cellular SMS Fallback Utility for ResQBharat SOS Dispatch.
  * If navigator.onLine is false or network requests time out, this utility generates
  * an encoded SMS URI (sms:+91112?body=LAT,LONG,STATUS) and automatically opens
  * the user's native device messaging app to dispatch the distress alert via cellular SMS.

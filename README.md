@@ -1,8 +1,8 @@
-# 🚨 AEGIS-OPS — Emergency Preparedness & Response Platform
+# 🚨 ResQBharat — Emergency Preparedness & Response Platform
 
 > **AWS Community Day Hackathon 2026 · Problem Statement 04**
 
-AEGIS-OPS is a real-time emergency coordination platform that empowers citizens and responders during disasters. It connects affected individuals with shelters, medical centers, and volunteer hubs — and works even when the network goes down.
+ResQBharat is a real-time emergency coordination platform that empowers citizens and responders during disasters. It connects affected individuals with shelters, medical centers, and volunteer hubs — and works even when the network goes down.
 
 ---
 
@@ -21,7 +21,7 @@ A triage modal for affected individuals to report their status (`SAFE`, `NEEDS S
 Supabase Realtime subscriptions push new incidents and citizen pings to the feed in real time, with optional audio alerts and severity-coded color coding.
 
 ### 📴 Offline-First (PWA)
-Networks fail first in disasters. AEGIS-OPS is a **Progressive Web App** that:
+Networks fail first in disasters. ResQBharat is a **Progressive Web App** that:
 - Caches the entire UI shell and Leaflet map tiles via a Service Worker
 - Saves SOS submissions and status check-ins to **IndexedDB** when `navigator.onLine === false`
 - **Auto-syncs** all queued data to Supabase the moment connectivity is restored
@@ -54,8 +54,8 @@ A full-screen responder directory listing all active personnel, their roles, ass
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/your-username/aegis-ops.git
-cd aegis-ops
+git clone https://github.com/your-username/resqbharat.git
+cd resqbharat
 npm install
 ```
 
@@ -152,7 +152,7 @@ src/
 
 ## 🛡️ Report Trust Layer (anti-fake-incident protection)
 
-AEGIS-OPS assumes the public can write incident reports and check-ins — and that some of
+ResQBharat assumes the public can write incident reports and check-ins — and that some of
 those writes will be fake. The trust pipeline hardens this without adding login friction:
 
 ```

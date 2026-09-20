@@ -112,7 +112,7 @@ export function matchFirstAidGuide(query = '') {
  * Generates an emergency index markdown table for quick offline navigation
  */
 export function generateIndexMarkdown(unmatchedQuery = '') {
-  let header = `### 📋 AEGIS-MEDIC OFFLINE FIRST-AID DIRECTORY\n\n`;
+  let header = `### 📋 ResQ-MEDIC OFFLINE FIRST-AID DIRECTORY\n\n`;
   if (unmatchedQuery) {
     header += `> [!NOTE]\n> No exact offline match for **"${unmatchedQuery}"**. Here are the verified local emergency triage protocols stored in cache:\n\n`;
   } else {

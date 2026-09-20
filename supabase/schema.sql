@@ -1,5 +1,5 @@
 -- ==============================================================================
--- AEGIS-OPS EMERGENCY RESPONSE SYSTEM - SUPABASE DATABASE SCHEMA
+-- ResQBharat EMERGENCY RESPONSE SYSTEM - SUPABASE DATABASE SCHEMA
 -- ==============================================================================
 
 -- 1. Enable UUID extension if not already present

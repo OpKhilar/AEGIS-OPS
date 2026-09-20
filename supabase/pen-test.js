@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * AEGIS-OPS trust-layer pen test.
+ * ResQBharat trust-layer pen test.
  *
  * Attacks the real database exactly like a malicious client would — using
  * only the public anon key (no service_role, no dashboard privileges) — to

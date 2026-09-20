@@ -5,7 +5,7 @@ import LoadingPanel from './LoadingPanel';
 const AiTriageChat = lazy(() => import('./AiTriageChat'));
 
 /**
- * Full-screen AEGIS-MEDIC triage terminal overlay.
+ * Full-screen ResQ-MEDIC triage terminal overlay.
  * Owns the lazy boundary for AiTriageChat so App stays chunk-lean.
  */
 export default function AiTriageModal({ isOpen, onClose, soundEnabled, prefillQuery }) {
@@ -17,7 +17,7 @@ export default function AiTriageModal({ isOpen, onClose, soundEnabled, prefillQu
         <Suspense
           fallback={
             <LoadingPanel
-              label="Loading AEGIS-MEDIC…"
+              label="Loading ResQ-MEDIC…"
               className="w-full h-full rounded-2xl border border-line bg-app-2 flex items-center justify-center"
             />
           }

@@ -2,8 +2,8 @@ import { EMERGENCY_SYSTEM_PROMPT } from '../data/emergencySystemPrompt.js';
 import { matchFirstAidGuide } from '../utils/firstAidMatcher.js';
 
 // Storage key for custom user-supplied Gemini API key
-const STORAGE_API_KEY = 'aegis_gemini_api_key';
-const STORAGE_OFFLINE_SIM = 'aegis_offline_simulation';
+const STORAGE_API_KEY = 'resqbharat_gemini_api_key';
+const STORAGE_OFFLINE_SIM = 'resqbharat_offline_simulation';
 
 class AiTriageService {
   constructor() {
@@ -188,7 +188,7 @@ class AiTriageService {
     
     let fallbackText = '';
     if (match.guide) {
-      fallbackText = `> [!NOTE]\n> **AEGIS OFFLINE PROTOCOL SERVED**\n> Source: Verified Local First-Aid Cache (${reason})\n\n` + match.markdown;
+      fallbackText = `> [!NOTE]\n> **ResQBharat OFFLINE PROTOCOL SERVED**\n> Source: Verified Local First-Aid Cache (${reason})\n\n` + match.markdown;
     } else {
       fallbackText = `> [!WARNING]\n> **OFFLINE MESH ACTIVE**\n> Source: Emergency Protocol Index (${reason})\n\n` + match.markdown;
     }

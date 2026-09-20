@@ -73,7 +73,7 @@ export default function App() {
     setAiTriagePrefill(query);
     setIsAiTriageOpen(true);
     if (soundEnabled) playAlertSound('advisory');
-    showToast(`AEGIS-MEDIC dispatched for: ${alert.title}`);
+    showToast(`ResQ-MEDIC dispatched for: ${alert.title}`);
   };
 
   const handleOpenAiTriageWithChip = (query) => {
@@ -511,7 +511,7 @@ export default function App() {
             setIsAiTriageOpen(true);
             if (soundEnabled) playAlertSound('advisory');
           }}
-          title="Open AEGIS-MEDIC AI First-Aid Triage Assistant"
+          title="Open ResQ-MEDIC AI First-Aid Triage Assistant"
           className="fixed bottom-6 right-6 z-40 px-4 py-3 rounded-2xl bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2.5 shadow-2xl shadow-rose-950/80 border border-rose-400/40 hover:scale-105 active:scale-95 transition-all group"
         >
           <div className="relative flex items-center justify-center w-6 h-6 rounded-lg bg-rose-500/30">

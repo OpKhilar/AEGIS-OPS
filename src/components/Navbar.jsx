@@ -93,7 +93,7 @@ export default function Navbar({
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-extrabold tracking-wider text-ink text-base sm:text-lg">
-                  AEGIS<span className="text-rose-500">OPS</span>
+                  ResQ<span className="text-rose-500">Bharat</span>
                 </span>
                 <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/30 uppercase tracking-wider">
                   {threatLevel}
@@ -150,7 +150,7 @@ export default function Navbar({
             {/* AI First-Aid Triage Terminal Toggle */}
             <button
               onClick={onToggleAiTriage}
-              title="Toggle AEGIS-MEDIC First-Aid AI Triage Assistant"
+              title="Toggle ResQ-MEDIC First-Aid AI Triage Assistant"
               className={`hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-lg border text-sm font-semibold transition-all shadow-sm ${
                 isAiTriageOpen 
                   ? 'bg-gradient-to-r from-rose-600 to-rose-700 text-white border-rose-400 shadow-rose-950/50 ring-2 ring-rose-500/40' 
@@ -194,7 +194,7 @@ export default function Navbar({
             <button
               onClick={() => setMenuOpen(o => !o)}
               aria-expanded={menuOpen}
-              aria-controls="aegis-mobile-menu"
+              aria-controls="resqbharat-mobile-menu"
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
               className={`sm:hidden flex items-center justify-center w-11 h-11 rounded-lg border transition-all ${
                 menuOpen
@@ -219,7 +219,7 @@ export default function Navbar({
             aria-hidden="true"
           />
           <nav
-            id="aegis-mobile-menu"
+            id="resqbharat-mobile-menu"
             aria-label="Mobile actions"
             className="sm:hidden absolute top-full left-0 right-0 z-50 border-b border-line bg-app/95 backdrop-blur-md shadow-2xl animate-menu-in"
           >

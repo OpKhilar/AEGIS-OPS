@@ -21,7 +21,7 @@ export default function QuickActionsCard({ onOpenTriageWithChip, onOpenTriage, o
             <HeartPulse className="w-4 h-4 animate-pulse" />
           </div>
           <span className="text-xs font-bold uppercase tracking-wider text-ink">
-            AEGIS-MEDIC TRIAGE
+            ResQ-MEDIC TRIAGE
           </span>
         </div>
         <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-emerald-500/20 text-emerald-400">
