@@ -10,7 +10,9 @@ import {
   PlusCircle,
   Activity,
   Wifi,
-  HeartPulse
+  HeartPulse,
+  Menu,
+  X
 } from 'lucide-react';
 import { playAlertSound } from '../utils/audio';
 import ThemeToggle from './ThemeToggle';
@@ -31,6 +33,7 @@ export default function Navbar({
 }) {
   const [timeStr, setTimeStr] = useState('');
   const [dateStr, setDateStr] = useState('');
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const updateTime = () => {
@@ -53,6 +56,25 @@ export default function Navbar({
     if (next) {
       playAlertSound('advisory');
     }
+  };
+
+  // Close the mobile menu on Escape, lock body scroll while open
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e) => { if (e.key === 'Escape') setMenuOpen(false); };
+    window.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [menuOpen]);
+
+  /** Run an action from the mobile menu: dismiss it first, then fire. */
+  const mobileAction = (fn) => () => {
+    setMenuOpen(false);
+    fn();
   };
 
   return (
@@ -127,41 +149,106 @@ export default function Navbar({
             <button
               onClick={onToggleAiTriage}
               title="Toggle AEGIS-MEDIC First-Aid AI Triage Assistant"
-              className={`flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-lg border text-xs sm:text-sm font-semibold transition-all shadow-sm ${
+              className={`hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-lg border text-sm font-semibold transition-all shadow-sm ${
                 isAiTriageOpen 
                   ? 'bg-gradient-to-r from-rose-600 to-rose-700 text-white border-rose-400 shadow-rose-950/50 ring-2 ring-rose-500/40' 
                   : 'bg-rose-500/10 text-rose-400 border-rose-500/40 hover:bg-rose-500/20 hover:border-rose-500/70'
               }`}
             >
               <HeartPulse className={`w-4 h-4 text-rose-400 ${isAiTriageOpen ? 'animate-bounce text-white' : 'animate-pulse'}`} />
-              <span className="hidden sm:inline">AI Triage</span>
-              <span className="sm:hidden">AI</span>
+              <span>AI Triage</span>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
             </button>
 
             {/* Quick User Status Check */}
             <button
               onClick={onOpenStatusModal}
-              className="flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/20 hover:border-emerald-500/70 text-xs sm:text-sm font-semibold transition-all shadow-sm group"
+              className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/20 hover:border-emerald-500/70 text-sm font-semibold transition-all shadow-sm group"
             >
               <UserCheck className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
-              <span className="hidden xs:inline">Check In</span>
-              <span className="xs:hidden">Status</span>
+              <span>Check In</span>
             </button>
 
             {/* Log Incident */}
             <button
               onClick={onOpenNewIncidentModal}
-              className="flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-lg bg-elevated text-ink-2 border border-line-strong hover:border-rose-500/60 hover:text-ink text-xs sm:text-sm font-semibold transition-all"
+              className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-elevated text-ink-2 border border-line-strong hover:border-rose-500/60 hover:text-ink text-sm font-semibold transition-all"
             >
               <PlusCircle className="w-4 h-4 text-rose-400" />
               <span className="hidden md:inline">Log Incident</span>
+            </button>
+
+            {/* Mobile hamburger — collapses all text actions below 640px */}
+            <button
+              onClick={() => setMenuOpen(o => !o)}
+              aria-expanded={menuOpen}
+              aria-controls="aegis-mobile-menu"
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              className={`sm:hidden flex items-center justify-center w-11 h-11 rounded-lg border transition-all ${
+                menuOpen
+                  ? 'bg-rose-500/10 text-rose-400 border-rose-500/40'
+                  : 'bg-elevated text-ink-2 border-line hover:text-ink'
+              }`}
+            >
+              {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
 
           </div>
 
         </div>
       </div>
+
+      {/* Mobile menu panel — full-width dropdown under the bar (< 640px only) */}
+      {menuOpen && (
+        <>
+          <div
+            className="sm:hidden fixed inset-0 top-16 z-40 bg-black/40"
+            onClick={() => setMenuOpen(false)}
+            aria-hidden="true"
+          />
+          <nav
+            id="aegis-mobile-menu"
+            aria-label="Mobile actions"
+            className="sm:hidden absolute top-full left-0 right-0 z-50 border-b border-line bg-app/95 backdrop-blur-md shadow-2xl animate-menu-in"
+          >
+            <div className="px-4 py-3 space-y-1.5">
+              {/* AI First-Aid Triage */}
+              <button
+                onClick={mobileAction(onToggleAiTriage)}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-semibold transition-all ${
+                  isAiTriageOpen
+                    ? 'bg-gradient-to-r from-rose-600 to-rose-700 text-white border-rose-400 shadow-lg shadow-rose-950/50'
+                    : 'bg-rose-500/10 text-rose-400 border-rose-500/30'
+                }`}
+              >
+                <HeartPulse className={`w-5 h-5 ${isAiTriageOpen ? 'text-white animate-bounce' : 'text-rose-400 animate-pulse'}`} />
+                <span>AI First-Aid Triage</span>
+                {isAiTriageOpen && (
+                  <span className="ml-auto text-[10px] font-mono uppercase tracking-wider">Open</span>
+                )}
+              </button>
+
+              {/* Check In */}
+              <button
+                onClick={mobileAction(onOpenStatusModal)}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-semibold bg-emerald-500/10 text-emerald-400 border-emerald-500/30 transition-all"
+              >
+                <UserCheck className="w-5 h-5" />
+                <span>Check In My Status</span>
+              </button>
+
+              {/* Log Incident */}
+              <button
+                onClick={mobileAction(onOpenNewIncidentModal)}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-semibold bg-elevated text-ink-2 border-line-strong transition-all"
+              >
+                <PlusCircle className="w-5 h-5 text-rose-400" />
+                <span>Log Critical Incident</span>
+              </button>
+            </div>
+          </nav>
+        </>
+      )}
     </header>
   );
 }
