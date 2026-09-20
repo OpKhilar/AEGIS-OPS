@@ -150,6 +150,39 @@ src/
 
 ---
 
+## 🛡️ Report Trust Layer (anti-fake-incident protection)
+
+AEGIS-OPS assumes the public can write incident reports and check-ins — and that some of
+those writes will be fake. The trust pipeline hardens this without adding login friction:
+
+```
+citizen submits ──▶ identity stamp ──▶ rate limit + dedup ──▶ geofence + constraints
+                        (anon auth)      (DB trigger)          (DB check)
+       ──▶ pending queue ──▶ corroboration (2+ devices ≈ auto-verify) ──▶ live map
+                                 └──▶ or human moderator verify / reject ──▶ live map
+```
+
+**Setup (one-time, ~5 minutes):**
+1. Run `supabase/migrations/001_trust_layer.sql` in the Supabase SQL Editor.
+2. Backfill existing rows so they don't flood the pending queue:
+   ```sql
+   update public.incidents   set verification_status = 'verified';
+   update public.user_status set verification_status = 'verified';
+   ```
+3. Enable **Anonymous sign-ins** (Dashboard → Authentication → Providers) — every device
+   then gets a stable `auth.uid()` used for rate limiting (5 reports / 10 min) and
+   corroboration scoring.
+4. Create your moderator user in Authentication → Users, then register yourself:
+   ```sql
+   insert into public.moderators (user_id)
+   select id from auth.users where email = 'your-moderator@email';
+   ```
+5. Open the clipboard icon in the navbar (or Moderation Queue on mobile) → Moderator Sign In.
+
+Pending reports never appear on the map or alert feed; unverified reports auto-expire
+after 30 minutes. All enforcement is server-side (RLS + triggers) — a tampered client
+cannot bypass it.
+
 ## 📄 License
 
 MIT — Built for the AWS Community Day Hackathon 2026.

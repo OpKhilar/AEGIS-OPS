@@ -4,8 +4,8 @@ import AiTriageModal from './components/AiTriageModal';
 import AppFooter from './components/AppFooter';
 import LoadingPanel from './components/LoadingPanel';
 import ThemeToggle from './components/ThemeToggle';
+const ModerationQueuePanel = lazy(() => import('./components/ModerationQueuePanel'));
 import { useTheme } from './hooks/useTheme';
-import { initSyncListener } from './utils/syncService';
 import { registerSW } from 'virtual:pwa-register';
 
 registerSW({ immediate: true });
@@ -20,14 +20,10 @@ const ResponderDirectory = lazy(() => import('./components/ResponderDirectory'))
 // Modals load on demand — they're only mounted while open
 const StatusCheckModal = lazy(() => import('./components/StatusCheckModal'));
 const NewIncidentModal = lazy(() => import('./components/NewIncidentModal'));
-import { 
-  fetchIncidents, 
-  createIncident, 
-  fetchResources, 
-  submitUserStatus, 
-  subscribeToIncidents 
-} from './services/emergencyService';
-import { isSupabaseConfigured } from './lib/supabaseClient';
+// Supabase services are lazy: the heavy supabase-js client loads on first
+// use, keeping the main bundle under the 500 kB chunk threshold.
+const emergencyService = () => import('./services/emergencyService');
+import { isSupabaseConfigured } from './lib/envConfig';
 import { 
   INITIAL_RESPONDERS, 
   INITIAL_ALERTS, 
@@ -60,6 +56,13 @@ export default function App() {
   const [focusedItem, setFocusedItem] = useState(null);
   const [toastMessage, setToastMessage] = useState(null);
 
+  // Trust pipeline: moderation queue state
+  const [isModQueueOpen, setIsModQueueOpen] = useState(false);
+  const [modQueue, setModQueue] = useState([]);
+  const [modQueueLoading, setModQueueLoading] = useState(false);
+  const [moderatorEmail, setModeratorEmail] = useState(null);
+  const [modActionInProgress, setModActionInProgress] = useState(null);
+
   const showToast = (msg) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 4000);
@@ -81,19 +84,26 @@ export default function App() {
 
   // Initial load from Supabase service
   useEffect(() => {
+    let unsubscribe = null;
+    let cancelled = false;
     async function loadData() {
-      const incRes = await fetchIncidents();
+      const svc = await emergencyService();
+      if (cancelled) return;
+      const incRes = await svc.fetchIncidents();
       setIncidents(incRes.data);
       if (incRes.isRealtime) setIsSupabaseConnected(true);
 
-      const rscRes = await fetchResources();
-      setResources(rscRes.data);
+      const rscRes = await svc.fetchResources();
+      if (!cancelled) setResources(rscRes.data);
     }
     loadData();
-    initSyncListener();
+    // Offline-queue sync imports the Supabase services — lazy to keep main bundle lean
+    import('./utils/syncService').then(({ initSyncListener }) => initSyncListener());
 
     // Supabase Real-Time subscription for incoming incidents
-    const unsubscribe = subscribeToIncidents((newInc) => {
+    emergencyService().then(svc => {
+      if (cancelled) return;
+      unsubscribe = svc.subscribeToIncidents((newInc) => {
       setIncidents(prev => [newInc, ...prev.filter(i => i.id !== newInc.id)]);
       const newAlert = {
         id: `ALT-RT-${newInc.id}`,
@@ -108,9 +118,11 @@ export default function App() {
       setAlerts(prev => [newAlert, ...prev]);
       if (soundEnabled) playAlertSound(newInc.severity);
       showToast(`Real-time update: ${newInc.title}`);
+      });
     });
 
     return () => {
+      cancelled = true;
       if (unsubscribe) unsubscribe();
     };
   }, [soundEnabled]);
@@ -133,13 +145,22 @@ export default function App() {
     showToast('EMERGENCY SOS BEACON BROADCASTED TO COMMAND.');
 
     // Write to Supabase user_status table
-    submitUserStatus({
+    emergencyService().then(({ submitUserStatus }) => submitUserStatus({
       id: `SOS-${Date.now()}`,
       status: 'CRITICAL',
       coordinates: beaconData.coordinates,
       address: 'Live Beacon Distress Ping',
       headcount: 1,
       medicalNotes: 'Emergency SOS Banner button triggered'
+    })).then(({ kind }) => {
+      // Beacon stays visually active regardless — but be honest about delivery
+      if (kind === 'rate_limited') {
+        showToast('⚠ SOS NOT DELIVERED — device rate limit reached. Use Call 108 / Call 101.');
+      } else if (kind === 'duplicate') {
+        showToast('SOS deduplicated — a beacon from this device is already queued.');
+      } else if (kind === 'error') {
+        showToast('⚠ SOS transmission issue — beacon kept active.');
+      }
     });
   };
 
@@ -168,7 +189,20 @@ export default function App() {
     showToast(`Safety check-in recorded: ${report.status}`);
 
     // Insert into Supabase user_status
-    await submitUserStatus(report);
+    const { submitUserStatus } = await emergencyService();
+    const { kind } = await submitUserStatus(report);
+
+    // Honest feedback: the trust pipeline may reject the write
+    if (kind === 'rate_limited') {
+      showToast('⚠ RATE LIMITED — too many reports from this device. Try again in 10 minutes.');
+      setAlerts(prev => prev.filter(a => a.id !== newAlert.id));
+    } else if (kind === 'duplicate') {
+      showToast('Duplicate check-in — a similar report from your device is already queued.');
+      setAlerts(prev => prev.filter(a => a.id !== newAlert.id));
+    } else if (kind === 'error') {
+      showToast('⚠ Check-in could not reach command — please retry.');
+      setAlerts(prev => prev.filter(a => a.id !== newAlert.id));
+    }
   };
 
   // Dispatcher creates new incident -> Supabase incidents table
@@ -186,14 +220,90 @@ export default function App() {
     };
     setAlerts(prev => [newAlert, ...prev]);
     setFocusedItem(newInc);
-    showToast(`Incident broadcasted to Supabase & tactical map.`);
+    showToast('Incident submitted — pending verification.');
 
-    // Insert into Supabase
-    await createIncident(newInc);
+    // Insert into Supabase — the trust pipeline may reject it
+    const { createIncident } = await emergencyService();
+    const { kind } = await createIncident(newInc);
+
+    if (kind === 'rate_limited') {
+      showToast('⚠ RATE LIMITED — too many reports from this device. Try again in 10 minutes.');
+      setIncidents(prev => prev.filter(i => i.id !== newInc.id));
+      setAlerts(prev => prev.filter(a => a.id !== newAlert.id));
+    } else if (kind === 'duplicate') {
+      showToast('Duplicate report — a similar incident from your device is already queued.');
+      setIncidents(prev => prev.filter(i => i.id !== newInc.id));
+      setAlerts(prev => prev.filter(a => a.id !== newAlert.id));
+    } else if (kind === 'error') {
+      showToast('⚠ Incident could not reach command — please retry.');
+      setIncidents(prev => prev.filter(i => i.id !== newInc.id));
+      setAlerts(prev => prev.filter(a => a.id !== newAlert.id));
+    }
   };
 
   const handleSelectIncident = (inc) => {
     setFocusedItem(inc);
+  };  // ---- Moderation queue handlers (trust pipeline human gate) ----
+  // moderationService is lazy-loaded so its weight stays out of the main bundle
+  const modService = () => import('./services/moderationService');
+
+  const refreshModQueue = async () => {
+    setModQueueLoading(true);
+    const { fetchModerationQueue } = await modService();
+    const rows = await fetchModerationQueue();
+    setModQueue(rows);
+    setModQueueLoading(false);
+  };
+
+  const handleOpenModQueue = async () => {
+    setIsModQueueOpen(true);
+    const { getModeratorSession } = await modService();
+    setModeratorEmail(await getModeratorSession());
+    refreshModQueue();
+  };
+
+  const handleModeratorSignIn = async (email, password) => {
+    setModActionInProgress('signin');
+    const { signInModerator } = await modService();
+    const { email: signedIn } = await signInModerator(email, password);
+    setModeratorEmail(signedIn);
+    setModActionInProgress(null);
+    if (signedIn) {
+      showToast(`Moderator authenticated: ${signedIn}`);
+      refreshModQueue();
+    } else {
+      showToast('Moderator sign-in failed — check credentials.');
+    }
+  };
+
+  const handleModeratorSignOut = async () => {
+    const { signOutModerator } = await modService();
+    await signOutModerator();
+    setModeratorEmail(null);
+    setModQueue([]);
+    showToast('Moderator signed out.');
+  };
+
+  const handleVerifyReport = async (id) => {
+    const { verifyIncident } = await modService();
+    const { error } = await verifyIncident(id);
+    if (error) {
+      showToast('Verify failed — moderator role required.');
+      return;
+    }
+    setModQueue(prev => prev.filter(r => r.id !== id));
+    showToast('Report verified — publishing to live map.');
+  };
+
+  const handleRejectReport = async (id) => {
+    const { rejectIncident } = await modService();
+    const { error } = await rejectIncident(id);
+    if (error) {
+      showToast('Reject failed — moderator role required.');
+      return;
+    }
+    setModQueue(prev => prev.filter(r => r.id !== id));
+    showToast('Report rejected and removed from pipeline.');
   };
 
   const handleSelectResponder = (resp) => {
@@ -231,6 +341,7 @@ export default function App() {
         activeIncidentsCount={incidents.length}
         activeRespondersCount={responders.length}
         isSupabaseConnected={isSupabaseConnected}
+        onOpenModQueue={handleOpenModQueue}
       />
 
       {/* 2. Urgent Flash Alert & SOS Banner */}
@@ -348,6 +459,26 @@ export default function App() {
             isOpen={isNewIncidentModalOpen}
             onClose={() => setIsNewIncidentModalOpen(false)}
             onCreateIncident={handleCreateIncident}
+            soundEnabled={soundEnabled}
+          />
+        </Suspense>
+      )}
+
+      {/* Moderation Queue — human gate of the report trust pipeline */}
+      {isModQueueOpen && (
+        <Suspense fallback={null}>
+          <ModerationQueuePanel
+            isOpen={isModQueueOpen}
+            onClose={() => setIsModQueueOpen(false)}
+            queue={modQueue}
+            isLoading={modQueueLoading}
+            moderatorEmail={moderatorEmail}
+            onSignIn={handleModeratorSignIn}
+            onSignOut={handleModeratorSignOut}
+            onVerify={handleVerifyReport}
+            onReject={handleRejectReport}
+            onRefresh={refreshModQueue}
+            actionInProgress={modActionInProgress}
             soundEnabled={soundEnabled}
           />
         </Suspense>
