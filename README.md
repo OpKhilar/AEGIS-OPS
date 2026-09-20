@@ -178,6 +178,14 @@ citizen submits ──▶ identity stamp ──▶ rate limit + dedup ──▶ 
    select id from auth.users where email = 'your-moderator@email';
    ```
 5. Open the clipboard icon in the navbar (or Moderation Queue on mobile) → Moderator Sign In.
+6. **Prove the enforcement works:**
+   ```bash
+   node supabase/pen-test.js
+   ```
+   Attacks the live database with the public anon key only — out-of-geofence reports,
+   illegal severities, absurd headcounts, duplicate floods, rate-limit breaches,
+   corroboration auto-verify, pending-row invisibility, and moderator-gate probes.
+   Exits non-zero on any RLS gap.
 
 Pending reports never appear on the map or alert feed; unverified reports auto-expire
 after 30 minutes. All enforcement is server-side (RLS + triggers) — a tampered client
