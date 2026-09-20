@@ -23,7 +23,6 @@ const NewIncidentModal = lazy(() => import('./components/NewIncidentModal'));
 // Supabase services are lazy: the heavy supabase-js client loads on first
 // use, keeping the main bundle under the 500 kB chunk threshold.
 const emergencyService = () => import('./services/emergencyService');
-import { isSupabaseConfigured } from './lib/envConfig';
 import { 
   INITIAL_RESPONDERS, 
   INITIAL_ALERTS, 
@@ -43,7 +42,6 @@ export default function App() {
   const [alerts, setAlerts] = useState(INITIAL_ALERTS);
   const [broadcastTickers, setBroadcastTickers] = useState(BROADCAST_TICKERS);
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [isSupabaseConnected, setIsSupabaseConnected] = useState(isSupabaseConfigured);
 
   // Modal controls
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
@@ -91,7 +89,6 @@ export default function App() {
       if (cancelled) return;
       const incRes = await svc.fetchIncidents();
       setIncidents(incRes.data);
-      if (incRes.isRealtime) setIsSupabaseConnected(true);
 
       const rscRes = await svc.fetchResources();
       if (!cancelled) setResources(rscRes.data);
@@ -340,7 +337,6 @@ export default function App() {
         threatLevel="DEFCON 2"
         activeIncidentsCount={incidents.length}
         activeRespondersCount={responders.length}
-        isSupabaseConnected={isSupabaseConnected}
         onOpenModQueue={handleOpenModQueue}
       />
 

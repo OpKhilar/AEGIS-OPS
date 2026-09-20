@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { 
   ShieldAlert, 
-  Radio, 
-  Satellite, 
   Volume2, 
   VolumeX, 
   Clock, 
   UserCheck, 
   PlusCircle,
-  Activity,
-  Wifi,
   HeartPulse,
   Menu,
   X,
@@ -30,8 +26,7 @@ export default function Navbar({
   onOpenModQueue,
   threatLevel = 'DEFCON 2',
   activeIncidentsCount = 5,
-  activeRespondersCount = 7,
-  isSupabaseConnected = false
+  activeRespondersCount = 7
 }) {
   const [timeStr, setTimeStr] = useState('');
   const [dateStr, setDateStr] = useState('');
@@ -107,20 +102,6 @@ export default function Navbar({
 
           {/* Telemetry & Network Status */}
           <div className="hidden lg:flex items-center gap-4 text-xs font-mono">
-            <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-app-2/80 border border-line text-ink-2">
-              <span className={`w-2 h-2 rounded-full ${isSupabaseConnected ? 'bg-emerald-400 animate-ping' : 'bg-sky-400'}`}></span>
-              <span className="text-ink-3">DB:</span>
-              <span className={isSupabaseConnected ? 'text-emerald-400 font-semibold' : 'text-sky-400 font-semibold'}>
-                {isSupabaseConnected ? 'SUPABASE REALTIME' : 'LOCAL / RESILIENT MESH'}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-app-2/80 border border-line text-ink-2">
-              <Wifi className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="text-ink-3">Mesh:</span>
-              <span className="text-emerald-400 font-semibold">14 NODES ACTIVE</span>
-            </div>
-
             <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-app-2/80 border border-line text-ink-2">
               <Clock className="w-3.5 h-3.5 text-amber-400" />
               <span>{dateStr}</span>
